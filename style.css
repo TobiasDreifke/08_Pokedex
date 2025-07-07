@@ -16,10 +16,9 @@ body {
     line-height: 1.5;
     background-color: #fff;
     color: #000;
-    min-height: 100vh;
+    min-height: 100dvh;
 }
 
-/* Reset default margin and padding for all elements */
 * {
     margin: 0;
     padding: 0;
@@ -45,14 +44,6 @@ a:hover,
 a:focus {
     text-decoration: underline;
     outline: none;
-}
-
-/* Basic container with some padding */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    /* center horizontally */
-    padding: 0 1rem;
 }
 
 /* --------------------------------- */
@@ -96,12 +87,12 @@ main {
     padding: 2rem 1rem;
     flex-grow: 1;
     /* sorgt dafür, dass main den restlichen Platz einnimmt */
-    min-height: 0;
+    /* min-height: 0; */
     /* wichtig für Flexbox-Layouts, verhindert overflow */
 }
 
 .main_container {
-    max-width: 900px;
+    max-width: 1440px;
     margin: 0 auto;
 }
 
