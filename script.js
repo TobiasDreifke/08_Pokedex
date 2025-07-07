@@ -1,6 +1,34 @@
-function init() {
-    myRenderFunction();
+
+
+
+
+
+
+
+async function allNames() {
+    let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=1500");
+    let data = await response.json();
+    let names = data.results.map(pokemon => pokemon.name);
+    return names;
+    // console.table("NAME FETCH" , names);
 }
+
+let currentNames = []
+
+async function init() {
+    currentNames = await allNames(); 
+    console.log("fetched names", currentNames); 
+    renderPokemonCard();
+}
+
+
+async function filterAndShowNames(filterWord) { 
+    const allNamesArray = await allNames();
+    currentNames = allNamesArray.filter(name => name.includes(filterWord))
+}
+
+console.log("fetched names", currentNames);
+
 
 async function fetchPokemonFirstGeneration() {
     try {
@@ -13,7 +41,7 @@ async function fetchPokemonFirstGeneration() {
     }
 };
 
-async function myRenderFunction() {
+async function renderPokemonCard() {
     let pokemonFirstGeneration = await fetchPokemonFirstGeneration();
     let contentRef = document.getElementById("content");
     for (let i = 0; i < pokemonFirstGeneration.length; i++) {
@@ -24,7 +52,7 @@ async function myRenderFunction() {
         // console.log(detailData);
 
         let moveNames = detailData.moves.slice(0, 4).map(moveObj => moveObj.move.name);
-        let typeNames = detailData.types.slice(0, 1).map(typeObj => typeObj.type.name);
+        let typeNames = detailData.types[0].type.name;
         console.log(typeNames);
 
 
@@ -32,6 +60,8 @@ async function myRenderFunction() {
 
     }
 };
+
+
 
 // async function fetchAllPokemonTypes() {
 //     try {
