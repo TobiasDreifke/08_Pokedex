@@ -7,9 +7,10 @@ async function init() {
     // renderGenerationHeadline();
     await buildGenerationMap();
     await renderPokemonCard();
+    renderFilterBar();
 }
 
-// ---------------- FETCH AND FILTER ALL NAMES ------------------
+// ---------------- GLOBAL VARIABLES ------------------
 
 let currentOffset = 0;
 const limit = 20;
@@ -19,18 +20,7 @@ let generationMapping = {};
 let lastRenderedGeneration = null;
 
 let currentNames = []
-
-async function allNames() {
-    let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=1500");
-    let data = await response.json();
-    let names = data.results.map(pokemon => pokemon.name);
-    return names;
-}
-
-async function filterAndShowNames(filterWord) {
-    const allNamesArray = await allNames();
-    currentNames = allNamesArray.filter(name => name.includes(filterWord))
-}
+let allPokemonData = [];
 
 // ---------------- FETCH ALL POKEMONS IN BATCHES ------------------
 
@@ -61,31 +51,6 @@ async function buildGenerationMap() {
 
 // ---------------- RENDER POKEMON CARDS ------------------
 
-// async function renderPokemonCard() {
-
-//     if (isLoading) return;
-//     isLoading = true;
-
-//     let pokemonBatch = await fetchPokemonBatch(currentOffset, limit);
-//     currentOffset += limit;
-
-//     let contentRef = document.getElementById("content");
-//     contentRef.innerHTML = "";
-//     for (let i = 0; i < pokemonBatch.length; i++) {
-//         let pokemon = pokemonBatch[i];
-
-//         let detailResponse = await fetch(pokemon.url);
-//         let detailData = await detailResponse.json();
-
-//         let moveNames = detailData.moves.slice(0, 4).map(moveObj => moveObj.move.name);
-//         let typeNames = detailData.types[0].type.name;
-
-//         contentRef.innerHTML += getMainPokedexTemplate(pokemon.name, moveNames, typeNames);
-//     }
-//     isLoading = false;
-
-// };
-
 async function renderPokemonCard() {
     if (isLoading) return;
     isLoading = true;
@@ -111,25 +76,124 @@ async function renderPokemonCard() {
         }
 
         contentRef.innerHTML += getMainPokedexTemplate(pokemonNames, moveNames, typeNames);
+
+        allPokemonData.push({
+            name: pokemonNames,
+            moves: moveNames,
+            type: typeNames,
+            generation: generationNames
+        });
     }
 
     isLoading = false;
 }
 
-// ---------------- FETCH ALL TYPES ------------------
+function renderPokemonList(pokemonArray) {
+    let contentRef = document.getElementById("content");
+    contentRef.innerHTML = "";
 
-// async function fetchAllPokemonTypes() {
-//     try {
-//         let response = await fetch("https://pokeapi.co/api/v2/type");
-//         let data = await response.json();
-//         console.log("Alle Pokémon-types:");
-//         console.table(data);
-//     } catch (error) {
-//         console.error("Fehler beim Laden der Typen:", error);
-//     }
-// }
+    let lastGen = null;
+    for (let i = 0; i < pokemonArray.length; i++) {
+        let p = pokemonArray[i];
+        if (p.generation !== lastGen) {
+            contentRef.innerHTML += `<h2>${p.generation.toUpperCase()}</h2>`;
+            lastGen = p.generation;
+        }
 
-// fetchAllPokemonTypes();
+        contentRef.innerHTML += getMainPokedexTemplate(p.name, p.moves, p.type);
+    }
+}
+
+function resetFilter() {
+    let filterButtons = document.querySelectorAll(".filterButton");
+    filterButtons.forEach(button => {
+        button.classList.remove('selected');
+    });
+
+    renderPokemonList(allPokemonData);
+}
+
+// ---------------- RENDER FILTER LIST ------------------
+
+async function allGenerations() {
+    try {
+        let response = await fetch("https://pokeapi.co/api/v2/generation");
+        let data = await response.json();
+        console.log("Alle Pokémon-generationen:");
+        console.table(data.results);
+        return data.results
+    } catch (error) {
+        console.error("Fehler beim Laden der Typen:", error);
+    }
+}
+
+async function allTypes() {
+    try {
+        let response = await fetch("https://pokeapi.co/api/v2/type");
+        let data = await response.json();
+        console.log("Alle Pokémon-types:");
+        console.table(data.results);
+        return data.results
+    } catch (error) {
+        console.error("Fehler beim Laden der Typen:", error);
+    }
+}
+
+async function renderFilterBar() {
+    let filterallTypes = await allTypes();
+    let filterallGenerations = await allGenerations();
+
+    let filterContentRef = document.getElementById("filterContent");
+    filterContentRef.innerHTML = "";
+
+    // Abschnitt: Typen
+    filterContentRef.innerHTML += `<h3>Filter by Type</h3>`;
+    for (let i = 0; i < filterallTypes.length; i++) {
+        let typeName = filterallTypes[i].name;
+        if (typeName === "unknown") continue; // optional
+        filterContentRef.innerHTML += `<div class="filterButton" onclick="filterPokemon(this)">${typeName}</div>`;
+    }
+
+    // Abschnitt: Generationen
+    filterContentRef.innerHTML += `<h3>Filter by Generation</h3>`;
+    for (let i = 0; i < filterallGenerations.length; i++) {
+        let genName = filterallGenerations[i].name;
+        filterContentRef.innerHTML += `<div class="filterButton" onclick="filterPokemon(this)">${genName}</div>`;
+    }
+}
+
+function filterPokemon(element) {
+    console.log("Geklickt:" + element.innerText);
+
+    // Button-Highlighting
+    let filterButtons = document.querySelectorAll(".filterButton");
+    filterButtons.forEach(button => {
+        button.classList.remove('selected');
+    });
+    element.classList.add("selected");
+
+    let filterValue = element.innerText;
+
+    let filteredPokemon = allPokemonData.filter(p => {
+        return p.type === filterValue || p.generation === filterValue;
+    });
+
+    renderPokemonList(filteredPokemon);
+}
+
+// ---------------- FETCH AND FILTER ALL NAMES ------------------
+
+async function allNames() {
+    let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=1500");
+    let data = await response.json();
+    let names = data.results.map(pokemon => pokemon.name);
+    return names;
+}
+
+async function filterAndShowNames(filterWord) {
+    const allNamesArray = await allNames();
+    currentNames = allNamesArray.filter(name => name.includes(filterWord))
+}
 
 // ----------------EVENTLISTENER FOR INFINITY SCROLL AND PAGIANTION ------------------
 

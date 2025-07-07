@@ -42,6 +42,11 @@ a:focus {
     outline: none;
 }
 
+h3 {
+    margin-top: 16px;
+    font-weight: bold;
+}
+
 /* --------------------------------- */
 /* -----------------HEADER--------------- */
 /* --------------------------------- */
@@ -87,6 +92,37 @@ main {
 .main_container {
     max-width: 1440px;
     margin: 0 auto;
+}
+
+.filter_wrapper {
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter_container {
+    background-color: #a40a0a;
+    text-align: center;
+    width: 90%;
+    max-width: 1400px;
+}
+
+.filterButton {
+    padding: 6px 12px;
+    background: lightgray;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    width: 8rem;
+    /* margin: 0.1rem; */
+}
+
+.filterButton.selected {
+    background-color: #ffcb05;
+    color: black;
+    font-weight: bold;
 }
 
 /* --------------------------------- */
