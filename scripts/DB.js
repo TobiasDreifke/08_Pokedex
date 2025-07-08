@@ -1,0 +1,20 @@
+const pokemonTypeIcons = {
+    bug: "./assets/icons/types/bug.svg",
+    dark: "./assets/icons/types/dark.svg",
+    dragon: "./assets/icons/types/dragon.svg",
+    electric: "./assets/icons/types/electric.svg",
+    fairy: "./assets/icons/types/fairy.svg",
+    fighting: "./assets/icons/types/fighting.svg",
+    fire: "./assets/icons/types/fire.svg",
+    flying: "./assets/icons/types/flying.svg",
+    ghost: "./assets/icons/types/ghost.svg",
+    grass: "./assets/icons/types/grass.svg",
+    ground: "./assets/icons/types/ground.svg",
+    ice: "./assets/icons/types/ice.svg",
+    normal: "./assets/icons/types/normal.svg",
+    poison: "./assets/icons/types/poison.svg",
+    psychic: "./assets/icons/types/psychic.svg",
+    rock: "./assets/icons/types/rock.svg",
+    steel: "./assets/icons/types/steel.svg",
+    water: "./assets/icons/types/water.svg"
+};

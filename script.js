@@ -35,9 +35,22 @@ async function renderPokemonCard() {
         let pokemonTypeColor = pokemon.types[0].type.name;
         let pokemonTypes = pokemon.types.map(types => types.type.name).join(', ')
         let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
+
+        let pokemonTypeIconsHTML = "";
+
+        for (let j = 0; j < pokemon.types.length; j++) {
+            let typeObj = pokemon.types[j];
+            let typeName = typeObj.type.name;
+            let iconPath = pokemonTypeIcons[typeName];
+
+            if (iconPath) {
+                pokemonTypeIconsHTML += `<img class="type_icon" src="${iconPath}">`;
+            }
+        }
+
         console.log(pokemonTypeColor);
-        
-        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonTypeColor, pokemonSprite, pokemonTypes);
+
+        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonTypeColor, pokemonSprite, pokemonTypes, pokemonTypeIconsHTML);
     }
 }
 
