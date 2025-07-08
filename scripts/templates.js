@@ -1,11 +1,14 @@
 
-function getMainPokedexTemplate(name, moves, type) {
+function getMainPokedexTemplate(i) {
     return `
     <div>
-        <h3 class="${type}">${name}</h3>
+        <h3 class="normal"></h3>
         <p>Moves:</p>
         <ul>
-            ${moves}
+           
         </ul>
     </div>`;
 };
+ // ${pokemonBatch}
+
+//  ${results[i].name}
