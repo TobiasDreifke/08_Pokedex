@@ -32,9 +32,12 @@ async function renderPokemonCard() {
         console.log(pokemon);
 
         let pokemonName = pokemon.name;
-        let pokemonType = pokemon.types[0].type.name;
+        let pokemonTypeColor = pokemon.types[0].type.name;
+        let pokemonTypes = pokemon.types.map(types => types.type.name).join(', ')
         let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
-        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonType, pokemonSprite);
+        console.log(pokemonTypeColor);
+        
+        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonTypeColor, pokemonSprite, pokemonTypes);
     }
 }
 
