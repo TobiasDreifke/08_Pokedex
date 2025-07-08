@@ -17,24 +17,28 @@ async function fetchDataJson() {
             let detailsData = await detailsRes.json();
             allPokemonDetails.push(detailsData);
         }
-        console.log("Alle Pokémon vollständig geladen:", allPokemonDetails);
-        console.log("Alle Pokémon vollständig geladen:", allPokemonDetails[0].types);
-
     } catch (error) {
         console.error("Fetch failed:", error);
     }
 }
+
 
 async function renderPokemonCard() {
     let contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
     console.log(allPokemonDetails);
     for (let i = 0; i < allPokemonDetails.length; i++) {
-        let pokemon = allPokemonDetails[i]; 
+        let pokemon = allPokemonDetails[i];
+        console.log(pokemon);
+
         let pokemonName = pokemon.name;
-        contentRef.innerHTML += `<h3 class="normal">${pokemonName}</h3>`;
+        let pokemonType = pokemon.types[0].type.name;
+        let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
+        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonType, pokemonSprite);
     }
 }
+
+
 
 
 

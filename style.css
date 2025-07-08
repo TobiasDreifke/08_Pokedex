@@ -94,6 +94,14 @@ main {
     margin: 0 auto;
 }
 
+.pokemon_card {
+    background-color: #303030;
+}
+
+.pokemon_card_image {
+    width: 5rem;
+}
+
 .filter_wrapper {
     background-color: #000;
     display: flex;
