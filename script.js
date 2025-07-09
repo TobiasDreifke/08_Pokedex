@@ -1,5 +1,6 @@
 async function init() {
     await fetchDataJson();
+    await fetchSpeciesForLoadedPokemon();
     renderPokemonCard();
 }
 
@@ -22,26 +23,24 @@ async function fetchDataJson() {
     }
 }
 
-async function fetchSpecies() {
-    try {
-        let response = await fetch("https://pokeapi.co/api/v2/pokemon-species/");
-        let data = await response.json();
-        let pokemonList = data.results;
-
-        for (let i = 0; i < pokemonList.length; i++) {
-            let detailsRes = await fetch(pokemonList[i].url);
-            let detailsData = await detailsRes.json();
-            allPokemonSpecies.push(detailsData);
+async function fetchSpeciesForLoadedPokemon() {
+    for (let pokemon of allPokemonDetails) {
+        try {
+            const speciesRes = await fetch(pokemon.species.url);
+            const speciesData = await speciesRes.json();
+            allPokemonSpecies.push(speciesData);
+        } catch (error) {
+            console.error("Fetch species failed for", pokemon.name, error);
         }
-    } catch (error) {
-        console.error("Fetch failed:", error);
     }
 }
-
 
 async function renderPokemonCard() {
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
+    console.log(allPokemonDetails);
+    console.log(allPokemonSpecies);
+
 
     for (let i = 0; i < allPokemonDetails.length; i++) {
         const pokemon = allPokemonDetails[i];
@@ -54,6 +53,12 @@ function getTypeIconsRef(types) {
         const iconPath = pokemonTypeIcons[type];
         return iconPath ? `<img class="type_icon bg_${type}" src="${iconPath}">` : "";
     }).join("");
+}
+
+function renderPopUpCard(pokemon) {
+    const popupRef = document.getElementById("popup-content");
+    popupRef.classList.remove("d_none");
+    popupRef.innerHTML = getPopUpCardTemplate(pokemon);
 }
 
 // async function renderPokemonCard() {
@@ -84,29 +89,29 @@ function getTypeIconsRef(types) {
 //     }
 // }
 
-function renderPopUpCard(pokemon) {
-    const popupRef = document.getElementById("popup-content");
-    popupRef.classList.remove("d_none");
+// function renderPopUpCard(pokemon) {
+//     const popupRef = document.getElementById("popup-content");
+//     popupRef.classList.remove("d_none");
 
-    let pokemonName = pokemon.name;
-    let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
-    let pokemonID = pokemon.id;
+//     let pokemonName = pokemon.name;
+//     let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
+//     let pokemonID = pokemon.id;
 
-    let pokemonHeight = pokemon.height;
-    let pokemonWeight = pokemon.weight;
+//     let pokemonHeight = pokemon.height;
+//     let pokemonWeight = pokemon.weight;
 
 
-    let types = pokemon.types.map(t => t.type.name);
-    let type1 = types[0];
-    let type2 = types[1] || null;
+//     let types = pokemon.types.map(t => t.type.name);
+//     let type1 = types[0];
+//     let type2 = types[1] || null;
 
-    let typeIconsHTML = types.map(typeName => {
-        let iconPath = pokemonTypeIcons[typeName];
-        return iconPath ? `<img class="type_icon bg_${typeName}" src="${iconPath}">` : "";
-    }).join("");
+//     let typeIconsHTML = types.map(typeName => {
+//         let iconPath = pokemonTypeIcons[typeName];
+//         return iconPath ? `<img class="type_icon bg_${typeName}" src="${iconPath}">` : "";
+//     }).join("");
 
-    popupRef.innerHTML = getPopUpCardTemplate(pokemonWeight, pokemonHeight, pokemonName, pokemonSprite, type1, type2, typeIconsHTML, pokemonID);
-}
+//     popupRef.innerHTML = getPopUpCardTemplate(pokemonWeight, pokemonHeight, pokemonName, pokemonSprite, type1, type2, typeIconsHTML, pokemonID);
+// }
 
 
 function togglePopUpOverlay(index) {

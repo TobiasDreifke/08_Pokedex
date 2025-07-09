@@ -6,31 +6,25 @@
     left: 0;
     width: 100%;
     height: 100dvh;
-    background-color: rgba(0, 0, 0, 0.8);
     z-index: 9999;
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(10px);
 }
 
 .popup_card {
+    backdrop-filter: blur(10px);
     width: 90%;
-    /* fast volle Breite auf kleinen Bildschirmen */
     max-width: 400px;
-    /* max Breite 300px */
     margin: 1.5rem auto;
-    /* zentriert mit etwas Abstand oben/unten */
     padding: 1rem;
-    background-color: rgb(90, 90, 90);
     border-radius: 1rem;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     font-family: sans-serif;
     box-sizing: border-box;
-    /* damit Padding nicht rausgerechnet wird */
-
     position: relative;
-    /* notwendig, damit .popup_image sich darauf bezieht */
     overflow: visible;
-    /* wichtig, sonst wird das Bild abgeschnitten */
     z-index: 0;
-    /* Grundebene */
 }
 
 /* ---------------------IMAGE-------------------------- */
@@ -38,20 +32,14 @@
 /* === IMAGE SECTION === */
 .popup_image_wrapper {
     position: absolute;
-    /* Position relativ zum nächsten positioned ancestor */
     top: 0;
     right: 0;
     width: 200px;
-    /* fixe Größe, kannst du anpassen */
     height: auto;
     z-index: 1;
-    /* niedrig, damit es hinter dem Text liegt */
     transform: translate(30%, -30%);
-    /* Bild etwas nach rechts und oben rausziehen */
     pointer-events: none;
-    /* verhindert, dass das Bild klickbar ist */
 }
-
 
 .popup_image_wrapper img {
     width: 100%;
@@ -87,7 +75,6 @@
     color: #ffffff;
     margin: 0;
     white-space: pre-wrap;
-    /* damit langer Text Zeilenumbruch macht */
 }
 
 /* ---------------------STATS TABLE-------------------------- */
@@ -101,7 +88,6 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     color: black;
     overflow-x: auto;
-    /* falls doch zu breit, Scrollen erlauben */
 }
 
 .popup_stats table {
@@ -147,25 +133,20 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    /* Abstand zwischen den zwei Containern */
     flex: 1;
-    /* nimmt möglichst viel Platz ein */
 }
 
-/* Jedes einzelne TYPE CONTAINER innerhalb vom TYPE WRAPPER */
 .popup_type_container {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-/* Überschrift Text über den Bildern */
 .popup_type_container p {
     font-weight: 600;
     font-size: 1rem;
 }
 
-/* Bilder nebeneinander mit kleinen Kreisen */
 .popup_type_images_container {
     display: flex;
     gap: 0.5rem;
@@ -178,7 +159,6 @@
     background-color: rgba(255, 255, 255, 0.15);
     object-fit: contain;
     padding: 4px;
-    /* etwas Abstand innen */
 }
 
 /* === PROGRESS DIVIDER === */
@@ -187,7 +167,6 @@
     background-color: white;
     margin: 0 1rem;
     align-self: stretch;
-    /* volle Höhe des Containers */
 }
 
 /* === PROGRESS SECTION === */
@@ -195,10 +174,8 @@
     display: flex;
     gap: 1rem;
     flex: 1;
-    /* nimmt möglichst viel Platz ein */
 }
 
-/* Textcontainer (links in PROGRESS WRAPPER) */
 .popup_progress_text_container {
     display: flex;
     flex-direction: column;
@@ -207,13 +184,11 @@
     font-size: 0.9rem;
 }
 
-/* Jede Zeile Text im PROGRESS_TEXT_CONTAINER */
 .popup_progress_text_container p {
     margin: 0 0 0.4rem 0;
     line-height: 1.2;
 }
 
-/* Progressbar Wrapper (rechts in PROGRESS WRAPPER) */
 .popup_progress_bar_wrapper {
     display: flex;
     flex-direction: column;
@@ -221,7 +196,6 @@
     flex-grow: 1;
 }
 
-/* Einzelner Progressbar Container (damit Balken nicht zu breit wird) */
 .popup_progress_bar_container {
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 0.5rem;
@@ -230,13 +204,10 @@
     overflow: hidden;
 }
 
-/* Der eigentliche Fortschrittsbalken */
 .popup_progress_bar {
     background-color: #4caf50;
-    /* Beispiel grün, kann angepasst werden */
     height: 100%;
     width: 70%;
-    /* Beispielbreite, sollte dynamisch sein */
     border-radius: 0.5rem 0 0 0.5rem;
     transition: width 0.3s ease;
 }
@@ -251,34 +222,28 @@
     margin-bottom: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     color: black;
-    /* Textfarbe schwarz */
 }
 
-/* Headline oben */
 .popup_evolution_headline {
     font-weight: 700;
     font-size: 1.2rem;
     margin-bottom: 1rem;
 }
 
-/* Container mit drei Tiers nebeneinander */
 .popup_evolution_container {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
 }
 
-/* Einzelner Tier-Container */
 .popup_evolution_tier {
     flex: 1;
-    /* alle gleich breit */
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 }
 
-/* Bild oben */
 .popup_evolution_tier img {
     width: 80px;
     height: 80px;
@@ -286,7 +251,6 @@
     margin-bottom: 0.5rem;
 }
 
-/* Name mittig */
 .popup_evolution_tier p {
     font-weight: 600;
     margin: 0 0 0.75rem 0;
@@ -294,13 +258,11 @@
     color: black;
 }
 
-/* Container für Kreise unten */
 .popup_evolution_tier_types {
     display: flex;
     gap: 0.5rem;
 }
 
-/* Kreise mit Hintergrund und Bild drin */
 .popup_evolution_tier_types img {
     width: 32px;
     height: 32px;
@@ -309,7 +271,6 @@
     padding: 4px;
     object-fit: contain;
 }
-
 
 @media (max-width: 600px) {
     .popup_evolution_container {
