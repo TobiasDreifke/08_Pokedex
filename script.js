@@ -14,7 +14,7 @@ let allPokemonSpecies = [];
 
 async function fetchDataJson() {
     try {
-        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=10");
+        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=151");
         let data = await response.json();
         let pokemonList = data.results;
 
@@ -47,27 +47,11 @@ async function fetchSpeciesForLoadedPokemon() {
 async function renderPokemonCard() {
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
-    // console.log(allPokemonDetails);
-    // console.log(allPokemonSpecies);
-
 
     for (let i = 0; i < allPokemonDetails.length; i++) {
         const pokemon = allPokemonDetails[i];
         contentRef.innerHTML += getMainPokedexTemplate(pokemon, i);
     }
-}
-
-function getTypeIconsRef(types) {
-    return types.map(type => {
-        const iconPath = pokemonTypeIcons[type];
-        return iconPath ? `<img class="type_icon bg_${type}" src="${iconPath}">` : "";
-    }).join("");
-}
-
-function renderPopUpCard(pokemon) {
-    const popupRef = document.getElementById("popup-content");
-    popupRef.classList.remove("d_none");
-    popupRef.innerHTML = getPopUpCardTemplate(pokemon);
 }
 
 // async function renderPokemonCard() {
@@ -98,6 +82,18 @@ function renderPopUpCard(pokemon) {
 //     }
 // }
 
+function getTypeIconsRef(types) {
+    return types.map(type => {
+        const iconPath = pokemonTypeIcons[type];
+        return iconPath ? `<img class="type_icon bg_${type}" src="${iconPath}">` : "";
+    }).join("");
+}
+
+function renderPopUpCard(pokemon) {
+    const popupRef = document.getElementById("popup-content");
+    popupRef.classList.remove("d_none");
+    popupRef.innerHTML = getPopUpCardTemplate(pokemon);
+}
 
 // -----------------OVERLAY----------------
 
@@ -113,32 +109,21 @@ function closePopUpOverlay() {
     contentRef.innerHTML = "";
 }
 
-// function triggerSearchOnKeyDown() {
-//     let inputRef = document.getElementById("input-search");
-//     inputRef.addEventListener("keypress", function (event) {
-
-//     }
-
 function search() {
     let inputRef = document.getElementById("input-search");
-    let input = inputRef.value;
-    if (input.length >= 3) {
-        console.log("more than 3 letters");
-        filterPokemonForSearch(input);
+    let input = inputRef.value.toLowerCase();
+    if (!isNaN(input) && input.length > 0) {
+        console.log("searching for number");
+        filterPokemonForSearch(input, true);
+    } else if (input.length >= 3) {
+        console.log("searching for name");
+        filterPokemonForSearch(input, false);
     }
     else {
         renderPokemonCard();
     }
-    // else {
-    //     let errorMessage = document.getElementById("search-error-container");
-    //     errorMessage.classList.remove("d_none");
-    //     errorMessage.innerHTML = `<div>pls enter more letters</div>`
-    //     console.log("not enough letters");
-    //     setTimeout(function () {
-    //         errorMessage.classList.add("d_none");
-    //     }, 2000);
-    //     inputRef.value = "";
-    // }
+
+
 }
 function reset() {
     let inputRef = document.getElementById("input-search");
@@ -147,15 +132,20 @@ function reset() {
     renderPokemonCard();
 }
 
-function filterPokemonForSearch(input) {
+function filterPokemonForSearch(input, searchById) {
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
+
     for (let i = 0; i < allPokemonDetails.length; i++) {
         let pokemon = allPokemonDetails[i];
-        let pokemonName = pokemon.name;
-        if (pokemonName.includes(input) === true) {
-            console.log(pokemonName);
-            contentRef.innerHTML += getMainPokedexTemplate(pokemon, i);
+        if (searchById) {
+            if (pokemon.id.toString().includes(input)) {
+                contentRef.innerHTML += getMainPokedexTemplate(pokemon, i);
+            }
+        } else {
+            if (pokemon.name.toLowerCase().includes(input.toLowerCase())) {
+                contentRef.innerHTML += getMainPokedexTemplate(pokemon, i);
+            }
         }
     }
 }
