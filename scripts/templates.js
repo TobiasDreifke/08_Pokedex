@@ -10,7 +10,7 @@ function getMainPokedexTemplate(pokemon, i) {
     let iconsRef = getTypeIconsRef(types);
 
     return `
-        <div class="pokemon_card_wrapper">
+        <div class="pokemon_card_wrapper fade-in">
             <div onclick="togglePopUpOverlay(${i})" class="pokemon_card" ${backgroundStyle}>
                 <img class="pokemon_card_image" src="${pokemon.sprites.other["official-artwork"].front_default}"></img>
                 <img class="pokemon_card_bg_image" src="./assets/icons/pokeball_white.png"></img> 
