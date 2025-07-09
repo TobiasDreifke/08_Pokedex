@@ -19,8 +19,10 @@ function getMainPokedexTemplate(name, sprite, type1, type2, iconsHTML, id) {
 
     return `
                 <div class="pokemon_card_wrapper">
-                       <img class="pokemon_card_image" src="${sprite}"></img>                               
+                                                      
                         <div class="pokemon_card" ${backgroundStyle}>
+                                               <img class="pokemon_card_image" src="${sprite}"></img>
+                       <img class="pokemon_card_bg_image" src="./assets/icons/pokeball_white.png"></img> 
                             <div class="upper_container">
                                 <div class="pokemon_name_bg_mask bg_transparent">
                                     <h3 class="pokemon_name_grid">${name}</h3>
@@ -40,7 +42,7 @@ function getMainPokedexTemplate(name, sprite, type1, type2, iconsHTML, id) {
 
 // <p>${pokemonTypes}</p>
 
-function getPopUpCard() {
+function getPopUpCardTemplate() {
     return `
                     <div class="popup_card">
                         <div class="popup_image_wrapper">

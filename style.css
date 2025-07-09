@@ -194,7 +194,7 @@ main {
 
 .pokemon_card_wrapper {
     /* background-color: #ffcb05; */
-    height: 250px;
+    height: 220px;
     display: flex;
     flex-direction: column;
     justify-content: end;
@@ -214,7 +214,7 @@ main {
     border-top-right-radius: 50%;
     /* padding-bottom: 1rem; */
     width: 150px;
-    height: 175px;
+    height: 150px;
 
     display: flex;
     flex-direction: column;
@@ -223,13 +223,14 @@ main {
 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease;
-    overflow: hidden;
+    /* overflow: hidden; */
+    
 }
 
 .upper_container {
     /* background-color: #d62020; */
     width: 100%;
-    height: 60%;
+    height: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -238,9 +239,9 @@ main {
 }
 
 .lower_container {
-    background-color: #2e2e2e;
+    background-color: #000000c8;
     width: 100%;
-    height: 40%;
+    height: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -253,7 +254,7 @@ main {
 
 .pokemon_card_image {
     position: absolute;
-    top: 40%;
+    top: 10%;
     left: 50%;
     transform: translate(-50%, -75%);
     height: 100px;
@@ -266,6 +267,26 @@ main {
 .pokemon_card_image:hover {
     transform: translate(-50%, -75%) scale(1.2);
 }
+
+.pokemon_card_bg_image {
+
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -75%);
+    height: 150px;
+    width: auto;
+    z-index: 1;
+    transition: transform 0.5s ease;
+    transform-origin: center center;
+    /* filter: invert(1); */
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+/* .pokemon_card_bg_image:hover {
+    transform: translate(-50%, -75%) scale(1.2);
+} */
 
 .pokemon_id_mask {
     /* background-color: #00000000; */
@@ -284,14 +305,16 @@ main {
 
 .pokemon_id {
     /* background-color: #ccc; */
+    color: #ffffff;
     text-align: left;
     font-size: 2.7rem;
     font-weight: 900;
     position: absolute;
-    bottom: -1.2rem;
+    bottom: -1.1rem;
     left: -0.75rem;
-    filter: opacity(0.5);
-    z-index: 0;
+    /* filter: opacity(0.9); */
+
+    z-index: 2;
 }
 
 .divider {
@@ -306,7 +329,7 @@ main {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    z-index: 1;
+    z-index: 3;
 }
 
 .type_icon {
@@ -334,8 +357,10 @@ main {
 }
 
 .pokemon_name_grid {
-    /* z-index: 1; */
-    color: white;
+    position: relative;
+    margin-bottom: -0.9rem;
+    z-index: 999;
+    color: rgb(255, 255, 255);
     /* background-color: #ffffff1f; */
 }
 

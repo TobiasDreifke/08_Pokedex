@@ -7,7 +7,7 @@ let allPokemonDetails = []; // all pokemon information global without generation
 
 async function fetchDataJson() {
     try {
-        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=10");
+        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=20");
         let data = await response.json();
         let pokemonList = data.results;
 
@@ -42,7 +42,7 @@ async function renderPokemonCard() {
             let typeName = types[j];
             let iconPath = pokemonTypeIcons[typeName];
             if (iconPath) {
-                pokemonTypeIconsHTML += `<img class="type_icon bg_${typeName}_transparent" src="${iconPath}">`;
+                pokemonTypeIconsHTML += `<img class="type_icon bg_${typeName}" src="${iconPath}">`;
             }
         }
 
@@ -50,6 +50,11 @@ async function renderPokemonCard() {
     }
 }
 
+function getPopUpCardTemplate () {
+
+}
+
+// getPopUpCard()
 
 init();
 
