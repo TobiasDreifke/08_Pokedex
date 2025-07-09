@@ -1,4 +1,7 @@
 /* === POPUP CARD WRAPPER === */
+
+.popup_card_wrapper {}
+
 .popup_card {
     width: 90%;
     /* fast volle Breite auf kleinen Bildschirmen */
@@ -83,40 +86,41 @@
 
 /* === STATS TABLE === */
 .popup_stats {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  color: black;
-  overflow-x: auto; /* falls doch zu breit, Scrollen erlauben */
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    color: black;
+    overflow-x: auto;
+    /* falls doch zu breit, Scrollen erlauben */
 }
 
 .popup_stats table {
-  width: 100%;
-  max-width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-  text-align: center;
-  table-layout: fixed;
-  word-wrap: break-word;
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: center;
+    table-layout: fixed;
+    word-wrap: break-word;
 }
 
 .popup_stats th,
 .popup_stats td {
-  padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid #ddd;
-  overflow-wrap: break-word;
-  white-space: normal;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #ddd;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 .popup_stats th {
-  font-weight: 600;
-  color: #333;
+    font-weight: 600;
+    color: #333;
 }
 
 .popup_stats td {
-  color: #222;
+    color: #222;
 }
 
 /* ---------------------TYPE & PROGRESS -------------------------- */
@@ -134,8 +138,10 @@
 .popup_type_wrapper {
     display: flex;
     flex-direction: column;
-    gap: 1rem; /* Abstand zwischen den zwei Containern */
-    flex: 1; /* nimmt möglichst viel Platz ein */
+    gap: 1rem;
+    /* Abstand zwischen den zwei Containern */
+    flex: 1;
+    /* nimmt möglichst viel Platz ein */
 }
 
 /* Jedes einzelne TYPE CONTAINER innerhalb vom TYPE WRAPPER */
@@ -163,7 +169,8 @@
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.15);
     object-fit: contain;
-    padding: 4px; /* etwas Abstand innen */
+    padding: 4px;
+    /* etwas Abstand innen */
 }
 
 /* === PROGRESS DIVIDER === */
@@ -171,14 +178,16 @@
     width: 1px;
     background-color: white;
     margin: 0 1rem;
-    align-self: stretch; /* volle Höhe des Containers */
+    align-self: stretch;
+    /* volle Höhe des Containers */
 }
 
 /* === PROGRESS SECTION === */
 .popup_progress_wrapper {
     display: flex;
     gap: 1rem;
-    flex: 1; /* nimmt möglichst viel Platz ein */
+    flex: 1;
+    /* nimmt möglichst viel Platz ein */
 }
 
 /* Textcontainer (links in PROGRESS WRAPPER) */
@@ -215,9 +224,11 @@
 
 /* Der eigentliche Fortschrittsbalken */
 .popup_progress_bar {
-    background-color: #4caf50; /* Beispiel grün, kann angepasst werden */
+    background-color: #4caf50;
+    /* Beispiel grün, kann angepasst werden */
     height: 100%;
-    width: 70%; /* Beispielbreite, sollte dynamisch sein */
+    width: 70%;
+    /* Beispielbreite, sollte dynamisch sein */
     border-radius: 0.5rem 0 0 0.5rem;
     transition: width 0.3s ease;
 }
@@ -230,8 +241,9 @@
     border-radius: 0.75rem;
     padding: 1rem;
     margin-bottom: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    color: black; /* Textfarbe schwarz */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    color: black;
+    /* Textfarbe schwarz */
 }
 
 /* Headline oben */
@@ -250,7 +262,8 @@
 
 /* Einzelner Tier-Container */
 .popup_evolution_tier {
-    flex: 1; /* alle gleich breit */
+    flex: 1;
+    /* alle gleich breit */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -284,15 +297,15 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0, 0, 0, 0.1);
     padding: 4px;
     object-fit: contain;
 }
 
 
 @media (max-width: 600px) {
-  .popup_evolution_container {
-    flex-direction: column;
-    gap: 1rem;
-  }
+    .popup_evolution_container {
+        flex-direction: column;
+        gap: 1rem;
+    }
 }

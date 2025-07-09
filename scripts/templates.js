@@ -20,7 +20,7 @@ function getMainPokedexTemplate(name, sprite, type1, type2, iconsHTML, id) {
     return `
                 <div class="pokemon_card_wrapper">
                                                       
-                        <div class="pokemon_card" ${backgroundStyle}>
+                        <div onclick="renderPopUpCard()" class="pokemon_card" ${backgroundStyle}>
                                                <img class="pokemon_card_image" src="${sprite}"></img>
                        <img class="pokemon_card_bg_image" src="./assets/icons/pokeball_white.png"></img> 
                             <div class="upper_container">
@@ -42,15 +42,22 @@ function getMainPokedexTemplate(name, sprite, type1, type2, iconsHTML, id) {
 
 // <p>${pokemonTypes}</p>
 
-function getPopUpCardTemplate() {
+function getPopUpCardTemplate(pokemonName, pokemonSprite, type1, type2, pokemonTypeIconsHTML, pokemonID) {
+     let backgroundStyle;
+    if (type2) {
+        backgroundStyle = `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"`;
+    } else {
+        backgroundStyle = `style="background: var(--${type1})"`;;
+    }
+    
     return `
-                    <div class="popup_card">
+                    <div class="popup_card ${backgroundStyle}">
                         <div class="popup_image_wrapper">
-                            <img src="./assets/img/placeholder.png" alt="">
+                            <img src="${pokemonSprite}" alt="">
                         </div>
                         <div class="popup_upper_text">
-                            <h2>#093</h2>
-                            <span>POKEMONNAME</span>
+                            <h2>#${pokemonID}</h2>
+                            <span>${pokemonName}</span>
                             <p>A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.</p>
                         </div>
                         <div class="popup_stats">
@@ -74,17 +81,15 @@ function getPopUpCardTemplate() {
                                 <div class="popup_type_container">
                                     <p>Type</p>
                                     <div class="popup_type_images_container">
-                                        <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
-                                        <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
-                                        <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
+                                        ${pokemonTypeIconsHTML}
                                     </div>
                                 </div>
                                 <div class="popup_type_container">
                                     <p>Weaknessess</p>
                                     <div class="popup_type_images_container">
-                                        <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
-                                        <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
-                                        <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
+                                        <img class="popup_type_image" src="${pokemonSprite}" alt="">
+                                        <img class="popup_type_image" src="${pokemonSprite}" alt="">
+                                        <img class="popup_type_image" src="${pokemonSprite}" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -116,27 +121,27 @@ function getPopUpCardTemplate() {
                             <div class="popup_evolution_headline"></div>
                             <div class="popup_evolution_container">
                                 <div class="popup_evolution_tier">
-                                    <img src="./assets/img/placeholder.png" alt="">
+                                    <img src="${pokemonSprite}" alt="">
                                     <p>POKEMON NAME EVOLUTION</p>
                                     <div class="popup_evolution_tier_types">
-                                        <img src="./assets/img/placeholder.png" alt="">
-                                        <img src="./assets/img/placeholder.png" alt="">
+                                        <img src="${pokemonSprite}" alt="">
+                                        <img src="${pokemonSprite}" alt="">
                                     </div>
                                 </div>
                                 <div class="popup_evolution_tier">
-                                    <img src="./assets/img/placeholder.png" alt="">
+                                    <img src="${pokemonSprite}" alt="">
                                     <p>POKEMON NAME EVOLUTION</p>
                                     <div class="popup_evolution_tier_types">
-                                        <img src="./assets/img/placeholder.png" alt="">
-                                        <img src="./assets/img/placeholder.png" alt="">
+                                        <img src="${pokemonSprite}" alt="">
+                                        <img src="${pokemonSprite}" alt="">
                                     </div>
                                 </div>
                                 <div class="popup_evolution_tier">
-                                    <img src="./assets/img/placeholder.png" alt="">
+                                    <img src="${pokemonSprite}" alt="">
                                     <p>POKEMON NAME EVOLUTION</p>
                                     <div class="popup_evolution_tier_types">
-                                        <img src="./assets/img/placeholder.png" alt="">
-                                        <img src="./assets/img/placeholder.png" alt="">
+                                        <img src="${pokemonSprite}" alt="">
+                                        <img src="${pokemonSprite}" alt="">
                                     </div>
                                 </div>
                             </div>
