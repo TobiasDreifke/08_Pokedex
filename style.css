@@ -158,7 +158,7 @@ main {
 
 .filterButton img {
     height: 1rem;
-    
+
 }
 
 /* -----------------POKEMON CARDS--------------- */
@@ -182,21 +182,36 @@ main {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+
+    border-radius: 0.5rem;
+    padding: 1rem;
+
     gap: 1rem;
+}
+
+.pokemon_card_wrapper {
+    /* background-color: #ffcb05; */
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+
 }
 
 .pokemon_card {
     /* background-color: #eb9c9c; */
     color: white;
+    position: relative;
 
     border-radius: 0.5rem;
     padding: 1rem;
     width: 150px;
+    height: 175px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease;
@@ -207,15 +222,26 @@ main {
 }
 
 .pokemon_card_image {
+
+    transform: translate(-50%, -75%);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100px;
+    width: auto;
+
+    z-index: 99;
     margin: 1rem;
-    width: 5rem;
-    height: auto;
-    transition: transform 0.5s ease;
+    transition: scale 0.5s ease;
 
 }
 
 .pokemon_card_image:hover {
-    transform: scale(1.5);
+    scale: 1.20;
+    transform: translate(-50%, -75%);
+    position: absolute;
+    top: 0;
+    left: 50%;
 }
 
 .divider {
