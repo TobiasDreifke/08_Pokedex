@@ -4,6 +4,7 @@ async function init() {
 }
 
 let allPokemonDetails = []; // all pokemon information global without generation
+let allPokemonSpecies = [];
 
 async function fetchDataJson() {
     try {
@@ -21,55 +22,102 @@ async function fetchDataJson() {
     }
 }
 
-async function renderPokemonCard() {
-    let contentRef = document.getElementById("content");
-    contentRef.innerHTML = "";
+async function fetchSpecies() {
+    try {
+        let response = await fetch("https://pokeapi.co/api/v2/pokemon-species/");
+        let data = await response.json();
+        let pokemonList = data.results;
 
-    for (let i = 0; i < allPokemonDetails.length; i++) {
-        let pokemon = allPokemonDetails[i];
-        let pokemonName = pokemon.name;
-        let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
-        let pokemonID = pokemon.id;
-
-        let types = pokemon.types.map(t => t.type.name);
-        let type1 = types[0];
-        let type2 = types[1] || null;
-
-        let pokemonTypeIconsHTML = "";
-        for (let j = 0; j < types.length; j++) {
-            let typeName = types[j];
-            let iconPath = pokemonTypeIcons[typeName];
-            if (iconPath) {
-                pokemonTypeIconsHTML += `<img class="type_icon bg_${typeName}" src="${iconPath}">`;
-            }
+        for (let i = 0; i < pokemonList.length; i++) {
+            let detailsRes = await fetch(pokemonList[i].url);
+            let detailsData = await detailsRes.json();
+            allPokemonSpecies.push(detailsData);
         }
-
-        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonSprite, type1, type2, pokemonTypeIconsHTML, pokemonID);
+    } catch (error) {
+        console.error("Fetch failed:", error);
     }
 }
 
-function renderPopUpCard() {
-    let contentRef = document.getElementById("popup-content");
-    console.log(contentRef);
+
+async function renderPokemonCard() {
+    const contentRef = document.getElementById("content");
+    contentRef.innerHTML = "";
+
     for (let i = 0; i < allPokemonDetails.length; i++) {
-        let pokemon = allPokemonDetails[i];
-        let pokemonName = pokemon.name;
-        let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
-        let pokemonID = pokemon.id;
-
-        let types = pokemon.types.map(t => t.type.name);
-        let type1 = types[0];
-        let type2 = types[1] || null;
-
-        let pokemonTypeIconsRef = types
-            .map(typeName => {
-                let iconPath = pokemonTypeIcons[typeName];
-                return iconPath ? `<img class="type_icon bg_${typeName}" src="${iconPath}">` : "";
-            })
-            .join("");
-
-        contentRef.innerHTML += getPopUpCardTemplate(pokemonName, pokemonSprite, type1, type2, pokemonTypeIconsRef, pokemonID);
+        const pokemon = allPokemonDetails[i];
+        contentRef.innerHTML += getMainPokedexTemplate(pokemon, i);
     }
+}
+
+function getTypeIconsRef(types) {
+    return types.map(type => {
+        const iconPath = pokemonTypeIcons[type];
+        return iconPath ? `<img class="type_icon bg_${type}" src="${iconPath}">` : "";
+    }).join("");
+}
+
+// async function renderPokemonCard() {
+//     let contentRef = document.getElementById("content");
+//     contentRef.innerHTML = "";
+//     console.log(allPokemonDetails);
+
+//     for (let i = 0; i < allPokemonDetails.length; i++) {
+//         let pokemon = allPokemonDetails[i];
+//         let pokemonName = pokemon.name;
+//         let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
+//         let pokemonID = pokemon.id;
+
+//         let types = pokemon.types.map(t => t.type.name);
+//         let type1 = types[0];
+//         let type2 = types[1] || null;
+
+//         let pokemonTypeIconsHTML = "";
+//         for (let j = 0; j < types.length; j++) {
+//             let typeName = types[j];
+//             let iconPath = pokemonTypeIcons[typeName];
+//             if (iconPath) {
+//                 pokemonTypeIconsHTML += `<img class="type_icon bg_${typeName}" src="${iconPath}">`;
+//             }
+//         }
+
+//         contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonSprite, type1, type2, pokemonTypeIconsHTML, pokemonID, i);
+//     }
+// }
+
+function renderPopUpCard(pokemon) {
+    const popupRef = document.getElementById("popup-content");
+    popupRef.classList.remove("d_none");
+
+    let pokemonName = pokemon.name;
+    let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
+    let pokemonID = pokemon.id;
+
+    let pokemonHeight = pokemon.height;
+    let pokemonWeight = pokemon.weight;
+
+
+    let types = pokemon.types.map(t => t.type.name);
+    let type1 = types[0];
+    let type2 = types[1] || null;
+
+    let typeIconsHTML = types.map(typeName => {
+        let iconPath = pokemonTypeIcons[typeName];
+        return iconPath ? `<img class="type_icon bg_${typeName}" src="${iconPath}">` : "";
+    }).join("");
+
+    popupRef.innerHTML = getPopUpCardTemplate(pokemonWeight, pokemonHeight, pokemonName, pokemonSprite, type1, type2, typeIconsHTML, pokemonID);
+}
+
+
+function togglePopUpOverlay(index) {
+    const pokemon = allPokemonDetails[index];
+    renderPopUpCard(pokemon);
+}
+
+function closePopUpOverlay() {
+    let contentRef = document.getElementById("popup-content");
+    contentRef.classList.add("d_none");
+    contentRef.innerHTML = "";
 }
 
 init();

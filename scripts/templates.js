@@ -1,15 +1,70 @@
 
-// function getMainPokedexTemplate(pokemonName, pokemonTypeColor, pokemonSprite, typeIconsHTML) {
-//     return `
-//                 <div class="pokemon_card ${pokemonTypeColor}">
-//                     <h3 class="bg_${pokemonTypeColor}">${pokemonName}</h3>
-//                     <img class="pokemon_card_image" src="${pokemonSprite}"></img>
-//                     <div class="divider"></div>
-//                     <div class="type_icons ">${typeIconsHTML}</div>
-//                 </div>`;
-// };
+function getMainPokedexTemplate(pokemon, i) {
 
-function getMainPokedexTemplate(name, sprite, type1, type2, iconsHTML, id) {
+    const types = pokemon.types.map(banana => banana.type.name);
+    const type1 = types[0];
+    const type2 = types[1] || null;
+
+    let backgroundStyle = type2 ? `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"` : `style="background: var(--${type1})"`;
+
+    let iconsRef = getTypeIconsRef(types);
+    
+    return `
+        <div class="pokemon_card_wrapper">
+            <div onclick="togglePopUpOverlay(${i})" class="pokemon_card" ${backgroundStyle}>
+                <img class="pokemon_card_image" src="${pokemon.sprites.other["official-artwork"].front_default}"></img>
+                <img class="pokemon_card_bg_image" src="./assets/icons/pokeball_white.png"></img> 
+                <div class="upper_container">
+                    <div class="pokemon_name_bg_mask bg_transparent">
+                        <h3 class="pokemon_name_grid">${pokemon.name}</h3>
+                    </div>
+                </div>
+                <div class="lower_container">
+                    <div class="pokemon_id_mask">
+                        <div class="pokemon_id">#${pokemon.id}</div>
+                    </div>
+                    <div class="type_icons ${backgroundStyle}">${iconsRef}</div>
+                </div>
+            </div> 
+        </div>
+    `;
+}
+
+
+// function getMainPokedexTemplate(name, sprite, type1, type2, iconsHTML, id, i) {
+//     let backgroundStyle;
+//     if (type2) {
+//         backgroundStyle = `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"`;
+//     } else {
+//         backgroundStyle = `style="background: var(--${type1})"`;;
+//     }
+
+//     return `
+//                 <div class="pokemon_card_wrapper">
+
+//                         <div onclick="togglePopUpOverlay(${i})" class="pokemon_card" ${backgroundStyle}>
+//                                                <img class="pokemon_card_image" src="${sprite}"></img>
+//                        <img class="pokemon_card_bg_image" src="./assets/icons/pokeball_white.png"></img> 
+//                             <div class="upper_container">
+//                                 <div class="pokemon_name_bg_mask bg_transparent">
+//                                     <h3 class="pokemon_name_grid">${name}</h3>
+//                                 </div>
+//                             </div>
+//                             <div class="lower_container">
+
+//                                     <div class="pokemon_id_mask">
+//                                         <div class="pokemon_id">#${id}</div>
+//                                     </div>
+//                                 <div class="type_icons ${backgroundStyle}">${iconsHTML}</div>
+//                             </div>
+//                         </div> 
+//                 </div>
+//     `;
+// }
+
+// <p>${pokemonTypes}</p>
+
+function getPopUpCardTemplate(pokemonWeight, pokemonHeight, pokemonName, pokemonSprite, type1, type2, pokemonTypeIconsHTML, pokemonID) {
     let backgroundStyle;
     if (type2) {
         backgroundStyle = `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"`;
@@ -18,40 +73,7 @@ function getMainPokedexTemplate(name, sprite, type1, type2, iconsHTML, id) {
     }
 
     return `
-                <div class="pokemon_card_wrapper">
-                                                      
-                        <div onclick="renderPopUpCard()" class="pokemon_card" ${backgroundStyle}>
-                                               <img class="pokemon_card_image" src="${sprite}"></img>
-                       <img class="pokemon_card_bg_image" src="./assets/icons/pokeball_white.png"></img> 
-                            <div class="upper_container">
-                                <div class="pokemon_name_bg_mask bg_transparent">
-                                    <h3 class="pokemon_name_grid">${name}</h3>
-                                </div>
-                            </div>
-                            <div class="lower_container">
-                                
-                                    <div class="pokemon_id_mask">
-                                        <div class="pokemon_id">#${id}</div>
-                                    </div>
-                                <div class="type_icons ${backgroundStyle}">${iconsHTML}</div>
-                            </div>
-                        </div> 
-                </div>
-    `;
-}
-
-// <p>${pokemonTypes}</p>
-
-function getPopUpCardTemplate(pokemonName, pokemonSprite, type1, type2, pokemonTypeIconsHTML, pokemonID) {
-     let backgroundStyle;
-    if (type2) {
-        backgroundStyle = `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"`;
-    } else {
-        backgroundStyle = `style="background: var(--${type1})"`;;
-    }
-    
-    return `
-                    <div class="popup_card ${backgroundStyle}">
+                    <div class="popup_card ${backgroundStyle}" >
                         <div class="popup_image_wrapper">
                             <img src="${pokemonSprite}" alt="">
                         </div>
@@ -69,10 +91,10 @@ function getPopUpCardTemplate(pokemonName, pokemonSprite, type1, type2, pokemonT
                                     <th>Gen.</th>
                                 </tr>
                                 <tr>
-                                    <td>5'2</td>
-                                    <td>10kg</td>
-                                    <td>Gas</td>
-                                    <td>M/P</td>
+                                    <td>${pokemonHeight}</td>
+                                    <td>${pokemonWeight}</td>
+                                    <td>${pokemonHeight}</td>
+                                    <td>${pokemonHeight}</td>
                                 </tr>
                             </table>
                         </div>
