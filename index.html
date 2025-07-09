@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="stylesheet" href="./styles/popupcard.css">
     <link rel="stylesheet" href="./styles/typeColors.css">
     <link rel="stylesheet" href="./style.css">
 
@@ -35,18 +35,116 @@
     <main>
         <section class="filter_wrapper">
             <div>
-                <h1>POKEDEX</h1>
+                <h1>Tobsédex</h1>
             </div>
             <div id="filterContent" class="filter_container">
                 <input type="text" placeholder="asd"></input>
-                <div class="filterButton" onclick="search()"><img src="./assets/icons/search-interface-symbol.png" alt=""></div>
+                <div class="filterButton" onclick="search()"><img src="./assets/icons/search-interface-symbol.png"
+                        alt=""></div>
             </div>
             <div class="filterButton_wrapper">
                 <div class="filterButton" onclick="previous()">previous</div>
                 <div class="filterButton" onclick="next()">next</div>
             </div>
-
         </section>
+        <div class="popup_card">
+            <div class="popup_image_wrapper">
+                <img src="./assets/img/placeholder.png" alt="">
+            </div>
+            <div class="popup_upper_text">
+                <h2>#093</h2>
+                <span>POKEMONNAME</span>
+                <p>A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.</p>
+            </div>
+            <div class="popup_stats">
+                <table>
+                    <tr>
+                        <th>Ht.</th>
+                        <th>Wt.</th>
+                        <th>Cat.</th>
+                        <th>Gen.</th>
+                    </tr>
+                    <tr>
+                        <td>5'2</td>
+                        <td>10kg</td>
+                        <td>Gas</td>
+                        <td>M/P</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="popup_type_progress_wrapper">
+                <div class="popup_type_wrapper">
+                    <div class="popup_type_container">
+                        <p>Type</p>
+                        <div class="popup_type_images_container">
+                            <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
+                            <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
+                            <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
+                        </div>
+                    </div>
+                    <div class="popup_type_container">
+                        <p>Weaknessess</p>
+                        <div class="popup_type_images_container">
+                            <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
+                            <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
+                            <img class="popup_type_image" src="./assets/img/placeholder.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="popup_type_progress_divider"></div>
+                <div class="popup_progress_wrapper">
+                    <div class="popup_progress_text_container">
+                        <p>HP</p>
+                        <p>ATTACK</p>
+                        <p>DEFENSE</p>
+                        <p>SPEED</p>
+                    </div>
+                    <div class="popup_progress_bar_wrapper">
+                        <div class="popup_progress_bar_container">
+                            <div class="popup_progress_bar"></div>
+                        </div>
+                        <div class="popup_progress_bar_container">
+                            <div class="popup_progress_bar"></div>
+                        </div>
+                        <div class="popup_progress_bar_container">
+                            <div class="popup_progress_bar"></div>
+                        </div>
+                        <div class="popup_progress_bar_container">
+                            <div class="popup_progress_bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_evolution_wrapper">
+                <div class="popup_evolution_headline"></div>
+                <div class="popup_evolution_container">
+                    <div class="popup_evolution_tier">
+                        <img src="./assets/img/placeholder.png" alt="">
+                        <p>POKEMON NAME EVOLUTION</p>
+                        <div class="popup_evolution_tier_types">
+                            <img src="./assets/img/placeholder.png" alt="">
+                            <img src="./assets/img/placeholder.png" alt="">
+                        </div>
+                    </div>
+                    <div class="popup_evolution_tier">
+                        <img src="./assets/img/placeholder.png" alt="">
+                        <p>POKEMON NAME EVOLUTION</p>
+                        <div class="popup_evolution_tier_types">
+                            <img src="./assets/img/placeholder.png" alt="">
+                            <img src="./assets/img/placeholder.png" alt="">
+                        </div>
+                    </div>
+                    <div class="popup_evolution_tier">
+                        <img src="./assets/img/placeholder.png" alt="">
+                        <p>POKEMON NAME EVOLUTION</p>
+                        <div class="popup_evolution_tier_types">
+                            <img src="./assets/img/placeholder.png" alt="">
+                            <img src="./assets/img/placeholder.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <section class="main_wrapper">
             <div class="main_container">
                 <div id="content" class="content"></div>
