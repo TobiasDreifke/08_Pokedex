@@ -2,7 +2,7 @@ async function init() {
     await fetchDataJson();
     await fetchSpeciesForLoadedPokemon();
     renderPokemonCard();
-    triggerSearchOnKeyDown();
+    // triggerSearchOnKeyDown();
 }
 
 let allPokemonDetails = []; // all pokemon information global without generation
@@ -113,15 +113,11 @@ function closePopUpOverlay() {
     contentRef.innerHTML = "";
 }
 
-function triggerSearchOnKeyDown() {
-    let inputRef = document.getElementById("input-search");
-    inputRef.addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            document.getElementById("input-search-button").click();
-        }
-    });
-}
+// function triggerSearchOnKeyDown() {
+//     let inputRef = document.getElementById("input-search");
+//     inputRef.addEventListener("keypress", function (event) {
+
+//     }
 
 function search() {
     let inputRef = document.getElementById("input-search");
@@ -129,16 +125,26 @@ function search() {
     if (input.length >= 3) {
         console.log("more than 3 letters");
         filterPokemonForSearch(input);
-    } else {
-        let errorMessage = document.getElementById("search-error-container");
-        errorMessage.classList.remove("d_none");
-        errorMessage.innerHTML = `<div>pls enter more letters</div>`
-        console.log("not enough letters");
-        setTimeout(function () {
-            errorMessage.classList.add("d_none");
-        }, 2000);
-        inputRef.value = "";
     }
+    else {
+        renderPokemonCard();
+    }
+    // else {
+    //     let errorMessage = document.getElementById("search-error-container");
+    //     errorMessage.classList.remove("d_none");
+    //     errorMessage.innerHTML = `<div>pls enter more letters</div>`
+    //     console.log("not enough letters");
+    //     setTimeout(function () {
+    //         errorMessage.classList.add("d_none");
+    //     }, 2000);
+    //     inputRef.value = "";
+    // }
+}
+function reset() {
+    let inputRef = document.getElementById("input-search");
+    inputRef.value = ""
+    console.log("reset wird durchgeführt");
+    renderPokemonCard();
 }
 
 function filterPokemonForSearch(input) {
