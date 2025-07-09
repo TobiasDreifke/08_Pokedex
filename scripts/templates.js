@@ -116,8 +116,10 @@ function getPopUpCardTemplate(pokemon) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="popup_type_progress_divider"></div>
-                            <div class="popup_progress_wrapper">
+                            
+                        </div>
+                        <div class="popup_type_progress_divider"></div>
+                        <div class="popup_progress_wrapper">
                                 <div class="popup_progress_text_container">
                                     <p>HP</p>
                                     <p>ATTACK</p>
@@ -139,7 +141,6 @@ function getPopUpCardTemplate(pokemon) {
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         
                     </div>
     `;

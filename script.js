@@ -2,14 +2,19 @@ async function init() {
     await fetchDataJson();
     await fetchSpeciesForLoadedPokemon();
     renderPokemonCard();
+    triggerSearchOnKeyDown();
 }
 
 let allPokemonDetails = []; // all pokemon information global without generation
 let allPokemonSpecies = [];
 
+
+// -----------------FETCH----------------
+
+
 async function fetchDataJson() {
     try {
-        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=3");
+        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=10");
         let data = await response.json();
         let pokemonList = data.results;
 
@@ -35,11 +40,15 @@ async function fetchSpeciesForLoadedPokemon() {
     }
 }
 
+
+// -----------------RENDER----------------
+
+
 async function renderPokemonCard() {
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
-    console.log(allPokemonDetails);
-    console.log(allPokemonSpecies);
+    // console.log(allPokemonDetails);
+    // console.log(allPokemonSpecies);
 
 
     for (let i = 0; i < allPokemonDetails.length; i++) {
@@ -89,29 +98,8 @@ function renderPopUpCard(pokemon) {
 //     }
 // }
 
-// function renderPopUpCard(pokemon) {
-//     const popupRef = document.getElementById("popup-content");
-//     popupRef.classList.remove("d_none");
 
-//     let pokemonName = pokemon.name;
-//     let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
-//     let pokemonID = pokemon.id;
-
-//     let pokemonHeight = pokemon.height;
-//     let pokemonWeight = pokemon.weight;
-
-
-//     let types = pokemon.types.map(t => t.type.name);
-//     let type1 = types[0];
-//     let type2 = types[1] || null;
-
-//     let typeIconsHTML = types.map(typeName => {
-//         let iconPath = pokemonTypeIcons[typeName];
-//         return iconPath ? `<img class="type_icon bg_${typeName}" src="${iconPath}">` : "";
-//     }).join("");
-
-//     popupRef.innerHTML = getPopUpCardTemplate(pokemonWeight, pokemonHeight, pokemonName, pokemonSprite, type1, type2, typeIconsHTML, pokemonID);
-// }
+// -----------------OVERLAY----------------
 
 
 function togglePopUpOverlay(index) {
@@ -125,7 +113,50 @@ function closePopUpOverlay() {
     contentRef.innerHTML = "";
 }
 
+function triggerSearchOnKeyDown() {
+    let inputRef = document.getElementById("input-search");
+    inputRef.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("input-search-button").click();
+        }
+    });
+}
+
+function search() {
+    let inputRef = document.getElementById("input-search");
+    let input = inputRef.value;
+    if (input.length >= 3) {
+        console.log("more than 3 letters");
+        filterPokemonForSearch(input);
+    } else {
+        let errorMessage = document.getElementById("search-error-container");
+        errorMessage.classList.remove("d_none");
+        errorMessage.innerHTML = `<div>pls enter more letters</div>`
+        console.log("not enough letters");
+        setTimeout(function () {
+            errorMessage.classList.add("d_none");
+        }, 2000);
+        inputRef.value = "";
+    }
+}
+
+function filterPokemonForSearch(input) {
+    const contentRef = document.getElementById("content");
+    contentRef.innerHTML = "";
+    for (let i = 0; i < allPokemonDetails.length; i++) {
+        let pokemon = allPokemonDetails[i];
+        let pokemonName = pokemon.name;
+        if (pokemonName.includes(input) === true) {
+            console.log(pokemonName);
+            contentRef.innerHTML += getMainPokedexTemplate(pokemon, i);
+        }
+    }
+}
+
 init();
+
+
 
 
 
