@@ -1,3 +1,28 @@
+
+:root {
+    --bug: #92BC2C;
+    --dark: #595761;
+    --dragon: #0C69C8;
+    --electric: #F2D94E;
+    --fairy: #EE90E6;
+    --fighting: #D3425F;
+    --fire: #FBA54C;
+    --flying: #A1BBEC;
+    --ghost: #5F6DBC;
+    --grass: #5FBD58;
+    --ground: #DA7C4D;
+    --ice: #75D0C1;
+    --normal: #A0A29F;
+    --poison: #B763CF;
+    --psychic: #FA8581;
+    --rock: #C9BB8A;
+    --steel: #5695A3;
+    --stellar: #6666FF;
+    --unknown: #CCCCCC;
+    --water: #539DDF;
+}
+
+
 /* -------------BACKGROUND ICONS AND TEXT---------------- */
 .bg_bug {
     background: #A6B91A;
@@ -78,186 +103,3 @@
 .bg_unknown {
     background: #CCCCCC;
 }
-
-/* -------------BACKGROUND CARD---------------- */
-
-.bug {
-    background: #92BC2C;
-    box-shadow: 0 0 20px #92BC2C;
-    transition: background-color 0.2s ease;
-}
-.bug:hover {
-    background-color: #AEDC4A;
-}
-
-.dark {
-    background: #595761;
-    box-shadow: 0 0 20px #595761;
-    transition: background-color 0.2s ease;
-}
-.dark:hover {
-    background-color: #6F6D78;
-}
-
-.dragon {
-    background: #0C69C8;
-    box-shadow: 0 0 20px #0C69C8;
-    transition: background-color 0.2s ease;
-}
-.dragon:hover {
-    background-color: #478DE4;
-}
-
-.electric {
-    background: #F2D94E;
-    box-shadow: 0 0 20px #F2D94E;
-    transition: background-color 0.2s ease;
-}
-.electric:hover {
-    background-color: #F9E97B;
-}
-
-.fairy {
-    background: #EE90E6;
-    box-shadow: 0 0 20px #EE90E6;
-    transition: background-color 0.2s ease;
-}
-.fairy:hover {
-    background-color: #F4A7ED;
-}
-
-.fighting {
-    background: #D3425F;
-    box-shadow: 0 0 20px #D3425F;
-    transition: background-color 0.2s ease;
-}
-.fighting:hover {
-    background-color: #E35C75;
-}
-
-.fire {
-    background: #FBA54C;
-    box-shadow: 0 0 20px #FBA54C;
-    transition: background-color 0.2s ease;
-}
-.fire:hover {
-    background-color: #FFC97D;
-}
-
-.flying {
-    background: #A1BBEC;
-    box-shadow: 0 0 20px #A1BBEC;
-    transition: background-color 0.2s ease;
-}
-.flying:hover {
-    background-color: #B9CDF3;
-}
-
-.ghost {
-    background: #5F6DBC;
-    box-shadow: 0 0 20px #5F6DBC;
-    transition: background-color 0.2s ease;
-}
-.ghost:hover {
-    background-color: #7B89D6;
-}
-
-.grass {
-    background: #5FBD58;
-    box-shadow: 0 0 20px #5FBD58;
-    transition: background-color 0.2s ease;
-}
-.grass:hover {
-    background-color: #7DD773;
-}
-
-.ground {
-    background: #DA7C4D;
-    box-shadow: 0 0 20px #DA7C4D;
-    transition: background-color 0.2s ease;
-}
-.ground:hover {
-    background-color: #E89B71;
-}
-
-.ice {
-    background: #75D0C1;
-    box-shadow: 0 0 20px #75D0C1;
-    transition: background-color 0.2s ease;
-}
-.ice:hover {
-    background-color: #A0E3D7;
-}
-
-.normal {
-    background: #A0A29F;
-    box-shadow: 0 0 20px #A0A29F;
-    transition: background-color 0.2s ease;
-}
-.normal:hover {
-    background-color: #B9BBB8;
-}
-
-.poison {
-    background: #B763CF;
-    box-shadow: 0 0 20px #B763CF;
-    transition: background-color 0.2s ease;
-}
-.poison:hover {
-    background-color: #CB81DC;
-}
-
-.psychic {
-    background: #FA8581;
-    box-shadow: 0 0 20px #FA8581;
-    transition: background-color 0.2s ease;
-}
-.psychic:hover {
-    background-color: #FFAAA7;
-}
-
-.rock {
-    background: #C9BB8A;
-    box-shadow: 0 0 20px #C9BB8A;
-    transition: background-color 0.2s ease;
-}
-.rock:hover {
-    background-color: #DDD09F;
-}
-
-.steel {
-    background: #5695A3;
-    box-shadow: 0 0 20px #5695A3;
-    transition: background-color 0.2s ease;
-}
-.steel:hover {
-    background-color: #73B0BF;
-}
-
-.stellar {
-    background: #6666FF;
-    box-shadow: 0 0 20px #6666FF;
-    transition: background-color 0.2s ease;
-}
-.stellar:hover {
-    background-color: #8888FF;
-}
-
-.unknown {
-    background: #CCCCCC;
-    box-shadow: 0 0 20px #CCCCCC;
-    transition: background-color 0.2s ease;
-}
-.unknown:hover {
-    background-color: #DDDDDD;
-}
-
-.water {
-    background: #539DDF;
-    box-shadow: 0 0 20px #539DDF;
-    transition: background-color 0.2s ease;
-}
-.water:hover {
-    background-color: #74B5EB;
-}
-

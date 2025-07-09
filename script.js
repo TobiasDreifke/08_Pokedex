@@ -21,31 +21,59 @@ async function fetchDataJson() {
     }
 }
 
+// async function renderPokemonCard() {
+//     let contentRef = document.getElementById("content");
+//     contentRef.innerHTML = "";
+//     // console.log(allPokemonDetails);
+//     for (let i = 0; i < allPokemonDetails.length; i++) {
+//         let pokemon = allPokemonDetails[i];
+//         // console.log(pokemon);
+
+//         let pokemonName = pokemon.name;
+//         let pokemonTypeColor = pokemon.types[0].type.name;
+//         // let pokemonTypes = pokemon.types.map(types => types.type.name)
+//         let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
+
+//         let pokemonTypeIconsHTML = "";
+
+//         for (let j = 0; j < pokemon.types.length; j++) {
+//             let typeObj = pokemon.types[j];
+//             let typeName = typeObj.type.name;
+//             let iconPath = pokemonTypeIcons[typeName];
+
+//             if (iconPath) {
+//                 pokemonTypeIconsHTML += `<img class="type_icon bg_${typeName}" src="${iconPath}">`;
+//             }
+//         }
+//         contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonTypeColor, pokemonSprite, pokemonTypeIconsHTML);
+//     }
+// }
+
 async function renderPokemonCard() {
     let contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
-    // console.log(allPokemonDetails);
+
     for (let i = 0; i < allPokemonDetails.length; i++) {
         let pokemon = allPokemonDetails[i];
-        // console.log(pokemon);
-
         let pokemonName = pokemon.name;
-        let pokemonTypeColor = pokemon.types[0].type.name;
-        // let pokemonTypes = pokemon.types.map(types => types.type.name)
         let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
 
+        // Typen extrahieren
+        let types = pokemon.types.map(t => t.type.name);
+        let type1 = types[0];
+        let type2 = types[1] || null;
+
+        // Typ-Icons vorbereiten
         let pokemonTypeIconsHTML = "";
-
-        for (let j = 0; j < pokemon.types.length; j++) {
-            let typeObj = pokemon.types[j];
-            let typeName = typeObj.type.name;
+        for (let j = 0; j < types.length; j++) {
+            let typeName = types[j];
             let iconPath = pokemonTypeIcons[typeName];
-
             if (iconPath) {
                 pokemonTypeIconsHTML += `<img class="type_icon bg_${typeName}" src="${iconPath}">`;
             }
         }
-        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonTypeColor, pokemonSprite, pokemonTypeIconsHTML);
+
+        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonSprite, type1, type2, pokemonTypeIconsHTML);
     }
 }
 

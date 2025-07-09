@@ -1,16 +1,35 @@
 
-function getMainPokedexTemplate(pokemonName, pokemonTypeColor, pokemonSprite, typeIconsHTML) {
+// function getMainPokedexTemplate(pokemonName, pokemonTypeColor, pokemonSprite, typeIconsHTML) {
+//     return `
+//                 <div class="pokemon_card ${pokemonTypeColor}">
+//                     <h3 class="bg_${pokemonTypeColor}">${pokemonName}</h3>
+//                     <img class="pokemon_card_image" src="${pokemonSprite}"></img>
+//                     <div class="divider"></div>
+//                     <div class="type_icons ">${typeIconsHTML}</div>
+//                 </div>`;
+// };
+
+function getMainPokedexTemplate(name, sprite, type1, type2, iconsHTML) {
+    let backgroundStyle;
+    if (type2) {
+        backgroundStyle = `style="background: linear-gradient(135deg, var(--${type1}) 45%, var(--${type2}) 75%)"`;
+    } else {
+        backgroundStyle = `class="${type1}"`;
+    }
+
     return `
-                <div class="pokemon_card ${pokemonTypeColor}">
-                    <h3 class="bg_${pokemonTypeColor}">${pokemonName}</h3>
-                    <img class="pokemon_card_image" src="${pokemonSprite}"></img>
-                    <div class="divider"></div>
-                    <div class="type_icons ">${typeIconsHTML}</div>
-                </div>`;
-};
+        <div class="pokemon_card" ${backgroundStyle}>
+            <h3 class="bg_${type1}">${name}</h3>
+            <img class="pokemon_card_image" src="${sprite}"></img>
+            <div class="divider"></div>
+            <div class="type_icons">${iconsHTML}</div>
+        </div>
+    `;
+}
+
 // <p>${pokemonTypes}</p>
 
-function getPopUpCard () {
+function getPopUpCard() {
     return `
                 <div class="popup_card">
                        <div class="popup_image">
