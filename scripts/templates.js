@@ -9,24 +9,33 @@
 //                 </div>`;
 // };
 
-function getMainPokedexTemplate(name, sprite, type1, type2, iconsHTML) {
+function getMainPokedexTemplate(name, sprite, type1, type2, iconsHTML, id) {
     let backgroundStyle;
     if (type2) {
-        backgroundStyle = `style="background: linear-gradient(135deg, var(--${type1}) 45%, var(--${type2}) 75%)"`;
+        backgroundStyle = `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"`;
     } else {
         backgroundStyle = `style="background: var(--${type1})"`;;
     }
 
     return `
                 <div class="pokemon_card_wrapper">
+                       <img class="pokemon_card_image" src="${sprite}"></img>                               
                         <div class="pokemon_card" ${backgroundStyle}>
-                            <img class="pokemon_card_image" src="${sprite}"></img>
-                            <h3 class="bg_${type1}">${name}</h3>
-                            <div class="divider"></div>
-                            <div class="type_icons">${iconsHTML}</div>
+                            <div class="upper_container">
+                                <div class="pokemon_name_bg_mask bg_transparent">
+                                    <h3 class="pokemon_name_grid">${name}</h3>
+                                </div>
+                            </div>
+                            <div class="lower_container">
+                                
+                                    <div class="pokemon_id_mask">
+                                        <div class="pokemon_id">#${id}</div>
+                                    </div>
+                                <div class="type_icons ${backgroundStyle}">${iconsHTML}</div>
+                            </div>
                         </div> 
                 </div>
-    `;      
+    `;
 }
 
 // <p>${pokemonTypes}</p>

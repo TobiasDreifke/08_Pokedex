@@ -7,7 +7,7 @@ let allPokemonDetails = []; // all pokemon information global without generation
 
 async function fetchDataJson() {
     try {
-        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=11");
+        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=10");
         let data = await response.json();
         let pokemonList = data.results;
 
@@ -29,6 +29,7 @@ async function renderPokemonCard() {
         let pokemon = allPokemonDetails[i];
         let pokemonName = pokemon.name;
         let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
+        let pokemonID = pokemon.id;
 
         // Typen extrahieren
         let types = pokemon.types.map(t => t.type.name);
@@ -41,11 +42,11 @@ async function renderPokemonCard() {
             let typeName = types[j];
             let iconPath = pokemonTypeIcons[typeName];
             if (iconPath) {
-                pokemonTypeIconsHTML += `<img class="type_icon bg_${typeName}" src="${iconPath}">`;
+                pokemonTypeIconsHTML += `<img class="type_icon bg_${typeName}_transparent" src="${iconPath}">`;
             }
         }
 
-        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonSprite, type1, type2, pokemonTypeIconsHTML);
+        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonSprite, type1, type2, pokemonTypeIconsHTML, pokemonID);
     }
 }
 
