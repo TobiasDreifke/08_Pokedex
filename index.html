@@ -28,19 +28,24 @@
     <header>
         <nav aria-label="Hauptnavigation">
             <section class="nav_wrapper">
-                <ul class="nav_list">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                </ul>
+                <img src="./assets/icons/pokeball.png" alt="">
             </section>
         </nav>
     </header>
     <main>
         <section class="filter_wrapper">
-            <h1>THIS IS YOUR H1</h1>
-            <div id="filterContent" class="filter_container"></div>
-            <div class="filterButton" onclick="resetFilter()">Alle anzeigen</div>
+            <div>
+                <h1>POKEDEX</h1>
+            </div>
+            <div id="filterContent" class="filter_container">
+                <input type="text" placeholder="asd"></input>
+                <div class="filterButton" onclick="search()"><img src="./assets/icons/search-interface-symbol.png" alt=""></div>
+            </div>
+            <div class="filterButton_wrapper">
+                <div class="filterButton" onclick="previous()">previous</div>
+                <div class="filterButton" onclick="next()">next</div>
+            </div>
+
         </section>
         <section class="main_wrapper">
             <div class="main_container">

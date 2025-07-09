@@ -3,12 +3,11 @@ async function init() {
     renderPokemonCard();
 }
 
-
 let allPokemonDetails = []; // all pokemon information global without generation
 
 async function fetchDataJson() {
     try {
-        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=10");
+        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=20");
         let data = await response.json();
         let pokemonList = data.results;
 
@@ -22,18 +21,17 @@ async function fetchDataJson() {
     }
 }
 
-
 async function renderPokemonCard() {
     let contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
-    console.log(allPokemonDetails);
+    // console.log(allPokemonDetails);
     for (let i = 0; i < allPokemonDetails.length; i++) {
         let pokemon = allPokemonDetails[i];
-        console.log(pokemon);
+        // console.log(pokemon);
 
         let pokemonName = pokemon.name;
         let pokemonTypeColor = pokemon.types[0].type.name;
-        let pokemonTypes = pokemon.types.map(types => types.type.name).join(', ')
+        // let pokemonTypes = pokemon.types.map(types => types.type.name)
         let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
 
         let pokemonTypeIconsHTML = "";
@@ -44,19 +42,12 @@ async function renderPokemonCard() {
             let iconPath = pokemonTypeIcons[typeName];
 
             if (iconPath) {
-                pokemonTypeIconsHTML += `<img class="type_icon" src="${iconPath}">`;
+                pokemonTypeIconsHTML += `<img class="type_icon bg_${typeName}" src="${iconPath}">`;
             }
         }
-
-        console.log(pokemonTypeColor);
-
-        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonTypeColor, pokemonSprite, pokemonTypes, pokemonTypeIconsHTML);
+        contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonTypeColor, pokemonSprite, pokemonTypeIconsHTML);
     }
 }
-
-
-
-
 
 init();
 
