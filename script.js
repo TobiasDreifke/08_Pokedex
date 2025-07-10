@@ -1,22 +1,23 @@
 async function init() {
     await fetchDataJson();
     await fetchSpeciesForLoadedPokemon();
-    
-    await renderPokemonCard(); 
 
-    
+    await renderPokemonCard();
+
+
 }
 
-let allPokemonDetails = []; // all pokemon information global without generation
+let allPokemonDetails = [];
 let allPokemonSpecies = [];
 
 const BATCH_SIZE = 20;
-let currentRenderIndex = 0; 
+let currentRenderIndex = 0;
 
 // -----------------FETCH----------------
 
 
 async function fetchDataJson() {
+    console.time('fetchAllPokemon');
     try {
         let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=151");
         let data = await response.json();
@@ -30,6 +31,7 @@ async function fetchDataJson() {
     } catch (error) {
         console.error("Fetch failed:", error);
     }
+    console.timeEnd('fetchAllPokemon');
 }
 
 async function fetchSpeciesForLoadedPokemon() {
