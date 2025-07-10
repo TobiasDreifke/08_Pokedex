@@ -21,6 +21,54 @@
     --water: #539DDF;
 }
 
+/* -------------------- Weißer Text (dunkle Hintergründe) -------------------- */
+:root {
+  --w-bug: #63960A;
+  --w-dark: #595761;
+  --w-dragon: #0C69C8;
+  --w-electric: #B59B22;
+  --w-fairy: #9E4D9D;
+  --w-fighting: #8A2A3B;
+  --w-fire: #C37418;
+  --w-flying: #5C6B8A;
+  --w-ghost: #2D397D;
+  --w-grass: #2B7A0B;
+  --w-ground: #804D2B;
+  --w-ice: #297C73;
+  --w-normal: #58594F;
+  --w-poison: #693E8C;
+  --w-psychic: #8A3634;
+  --w-rock: #7A6D4E;
+  --w-steel: #37607A;
+  --w-stellar: #0000FF;
+  --w-unknown: #7A7A7A;
+  --w-water: #1C5F9B;
+}
+
+/* -------------------- Schwarzer Text (helle Hintergründe) -------------------- */
+:root {
+  --b-bug: #92BC2C;
+  --b-dark: #7B7B8B;
+  --b-dragon: #0C69C8;
+  --b-electric: #F2D94E;
+  --b-fairy: #EE90E6;
+  --b-fighting: #D3425F;
+  --b-fire: #FBA54C;
+  --b-flying: #A1BBEC;
+  --b-ghost: #5F6DBC;
+  --b-grass: #5FBD58;
+  --b-ground: #DA7C4D;
+  --b-ice: #75D0C1;
+  --b-normal: #A0A29F;
+  --b-poison: #B763CF;
+  --b-psychic: #FA8581;
+  --b-rock: #C9BB8A;
+  --b-steel: #5695A3;
+  --b-stellar: #6666FF;
+  --b-unknown: #CCCCCC;
+  --b-water: #539DDF;
+}
+
 
 /* -------------BACKGROUND ICONS AND TEXT---------------- */
 .bg_bug {
