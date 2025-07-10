@@ -1,15 +1,27 @@
 async function init() {
     await fetchDataJson();
     await renderPokemonCard();
-    await fetchSpeciesForLoadedPokemon();
+    // await fetchSpeciesForLoadedPokemon();
     await fetchPokemonNamesForSearch();
+    await fetchGenerationForFilter();
+    await fetchSpeciesForFilter();
 }
+
+
+// -----------------GLOBALS----------------
+
 
 let allPokemonDetails = [];
 let allPokemonSpecies = [];
 let allPokemonNames = [];
+let allPokemonGenerations = [];
+
+let currentGenNumber = 1;
+let maxGeneration = 0;
+
 
 // -----------------FETCH----------------
+
 
 async function fetchDataJson() {
     let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=151");
@@ -27,17 +39,20 @@ async function fetchPokemonNamesForSearch() {
     allPokemonNames = await data.results;
 }
 
-async function fetchSpeciesForLoadedPokemon() {
-    for (let pokemon of allPokemonDetails) {
-        try {
-            const speciesRes = await fetch(pokemon.species.url);
-            const speciesData = await speciesRes.json();
-            allPokemonSpecies.push(speciesData);
-        } catch (error) {
-            console.error("Fetch species failed for", pokemon.name, error);
-        }
-    }
-    console.log("species", allPokemonSpecies);
+async function fetchGenerationForFilter() {
+    let response = await fetch("https://pokeapi.co/api/v2/generation");
+    let data = await response.json();
+
+    allPokemonGenerations = data.results;
+    maxGeneration = allPokemonGenerations.length;
+
+    console.log("Generation count:", maxGeneration);
+}
+
+async function fetchSpeciesForFilter() {
+    let response = await fetch(`https://pokeapi.co/api/v2/generation/${currentGenNumber}`);
+    let data = await response.json();
+    allPokemonSpecies = data.pokemon_species;
 }
 
 
@@ -53,36 +68,8 @@ async function renderPokemonCard() {
         html += getMainPokedexTemplate(pokemon, i);
     }
 
-    contentRef.innerHTML = html; // nur einmal setzen
+    contentRef.innerHTML = html;
 }
-
-// async function renderPokemonCard() {
-//     let contentRef = document.getElementById("content");
-//     contentRef.innerHTML = "";
-//     console.log(allPokemonDetails);
-
-//     for (let i = 0; i < allPokemonDetails.length; i++) {
-//         let pokemon = allPokemonDetails[i];
-//         let pokemonName = pokemon.name;
-//         let pokemonSprite = pokemon.sprites.other["official-artwork"].front_default;
-//         let pokemonID = pokemon.id;
-
-//         let types = pokemon.types.map(t => t.type.name);
-//         let type1 = types[0];
-//         let type2 = types[1] || null;
-
-//         let pokemonTypeIconsHTML = "";
-//         for (let j = 0; j < types.length; j++) {
-//             let typeName = types[j];
-//             let iconPath = pokemonTypeIcons[typeName];
-//             if (iconPath) {
-//                 pokemonTypeIconsHTML += `<img class="type_icon bg_${typeName}" src="${iconPath}">`;
-//             }
-//         }
-
-//         contentRef.innerHTML += getMainPokedexTemplate(pokemonName, pokemonSprite, type1, type2, pokemonTypeIconsHTML, pokemonID, i);
-//     }
-// }
 
 function renderPopUpCard(pokemon) {
     const popupRef = document.getElementById("popup-content");
@@ -105,6 +92,10 @@ function closePopUpOverlay() {
     contentRef.innerHTML = "";
 }
 
+
+// -----------------SEARCH----------------
+
+
 function search() {
     let inputRef = document.getElementById("input-search");
     let input = inputRef.value.toLowerCase();
@@ -121,6 +112,7 @@ function search() {
 }
 
 function reset() {
+    console.log("reset wird gestartet");
     let inputRef = document.getElementById("input-search");
     if (inputRef.value > 0) {
         inputRef.value = ""
@@ -159,6 +151,127 @@ async function filterPokemonForSearch(input, searchByNumber) {
 }
 
 
-// -------------Eventistner Scroll--------------
+// -----------------NEXT & PREVIOUS----------------
+
+
+async function next() {
+    currentGenNumber++;
+    const contentRef = document.getElementById("content");
+    contentRef.innerHTML = "";
+
+    toggleNextButton()
+    await fetchSpeciesForFilter();
+
+    const pokemonData = allPokemonSpecies.map(async (pokemonSpecies) => {
+        const speciesUrl = pokemonSpecies.url;
+
+        const id = speciesUrl.split('/').filter(Boolean).pop();
+
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const details = await response.json();
+        return details;
+    });
+
+    const fetchedDetails = await Promise.all(pokemonData);
+    const sortedDetails = fetchedDetails.sort((a, b) => a.id - b.id);
+
+    allPokemonDetails.push(...sortedDetails);
+
+    const htmlSnippets = sortedDetails.map((details, index) =>
+        getMainPokedexTemplate(details, index)
+    );
+
+    contentRef.innerHTML = htmlSnippets.join('');
+}
+
+async function previous() {
+    currentGenNumber--;
+
+
+    const contentRef = document.getElementById("content");
+    contentRef.innerHTML = "";
+
+
+    togglePreviousButton()
+    await fetchSpeciesForFilter();
+
+    const pokemonData = allPokemonSpecies.map(async (pokemonSpecies) => {
+        const speciesUrl = pokemonSpecies.url;
+        const id = speciesUrl.split('/').filter(Boolean).pop();
+
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const details = await response.json();
+        return details;
+    });
+
+    const fetchedDetails = await Promise.all(pokemonData);
+    const sortedDetails = fetchedDetails.sort((a, b) => a.id - b.id);
+
+    allPokemonDetails = [...sortedDetails];
+
+    const htmlSnippets = sortedDetails.map((details, index) =>
+        getMainPokedexTemplate(details, index)
+    );
+
+    contentRef.innerHTML = htmlSnippets.join('');
+}
+
+
+// -----------------NEXT & PREVIOUS TOGGLE BUTTONS----------------
+
+
+
+function toggleNextButton() {
+    const nextButtonRef = document.getElementById("next-generation-button");
+    const prevButtonRef = document.getElementById("previous-generation-button");
+
+    nextButtonRef.classList.toggle("d_none", currentGenNumber === maxGeneration);
+    nextButtonRef.classList.toggle("filterButton", currentGenNumber !== maxGeneration);
+
+    prevButtonRef.classList.toggle("d_none", currentGenNumber <= 1);
+    prevButtonRef.classList.toggle("filterButton", currentGenNumber > 1);
+    //   if (currentGenNumber === maxGeneration) {
+//         nextButtonRef.classList.add("d_none");
+//         nextButtonRef.classList.remove("filterButton");
+//     } else {
+//         nextButtonRef.classList.remove("d_none");
+//         nextButtonRef.classList.add("filterButton");
+//     }
+
+//     if (currentGenNumber > 1) {
+//         prevButtonRef.classList.remove("d_none");
+//         prevButtonRef.classList.add("filterButton");
+//     } else {
+//         prevButtonRef.classList.add("d_none");
+//         prevButtonRef.classList.remove("filterButton");
+//     }
+}
+
+function togglePreviousButton() {
+    const nextButtonRef = document.getElementById("next-generation-button");
+    const prevButtonRef = document.getElementById("previous-generation-button");
+
+    nextButtonRef.classList.toggle("d_none", currentGenNumber >= maxGeneration);
+    nextButtonRef.classList.toggle("filterButton", currentGenNumber < maxGeneration);
+
+    prevButtonRef.classList.toggle("d_none", currentGenNumber <= 1);
+    prevButtonRef.classList.toggle("filterButton", currentGenNumber > 1);
+    // if (currentGenNumber < maxGeneration) {
+    //     nextButtonRef.classList.remove("d_none");
+    //     nextButtonRef.classList.add("filterButton");
+    // } else {
+    //     nextButtonRef.classList.add("d_none");
+    //     nextButtonRef.classList.remove("filterButton");
+    // }
+
+    // if (currentGenNumber > 1) {
+    //     prevButtonRef.classList.remove("d_none");
+    //     prevButtonRef.classList.add("filterButton");
+    // } else {
+    //     prevButtonRef.classList.add("d_none");
+    //     prevButtonRef.classList.remove("filterButton");
+    // }
+}
+
 
 init();
