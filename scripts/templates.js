@@ -43,17 +43,36 @@ function getPopUpCardTemplate(pokemon) {
     const type2 = types[1] || null;
 
     let backgroundStyle = type2 ? `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"` : `style="background: var(--${type1})"`;
+    let backgroundStyleGlow = type2  ? `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"` : `style="background: var(--${type1})"`;
+    let typeIconsHTML = getTypeIconsRef(types);
 
-    const typeIconsHTML = getTypeIconsRef(types);
-
-    return `
-                    <div class="popup_card" ${backgroundStyle} >
+    return `                                                                                            
+                <div class="pop_up_card_container">
+                    <div class="pokemon_popup_card_bg_glow" ${backgroundStyleGlow} ></div> 
+                    <div class="popup_card_upper" ${backgroundStyle} >
+                                                    <img class="pokemon_popup_card_bg_image" src="./assets/icons/pokeball_straight.png"></img> 
+                   
                         <div class="popup_image_wrapper">
-                            <img src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
-                        </div>
+                            <div class="popup_glow"></div>
+                                                        <img src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
+
+                        </div>   
                         <div class="popup_upper_text">
-                            <h2>#${pokemon.id}</h2>
-                            <span>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</span>
+                            <h2 class="popup_upper_text_h2">#${pokemon.id}</h2>
+                            <span class="popup_upper_text_span" >${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</span>
+                             <div class="popup_type_container">
+                                    <div class="popup_type_images_container"> 
+                                    ${typeIconsHTML}
+                                    </div>
+                                </div>
+                        </div>
+
+                    </div>
+
+                    <div class="popup_card_lower" >
+
+                    <div class="popup_type_progress_divider"></div>
+                        <div class="popup_lower_text">
                             <p>A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.</p>
                         </div>
                         <div class="popup_stats">
@@ -72,25 +91,6 @@ function getPopUpCardTemplate(pokemon) {
                                 </tr>
                             </table>
                         </div>
-                        <div class="popup_type_progress_wrapper">
-                            <div class="popup_type_wrapper">
-                                <div class="popup_type_container">
-                                    <p>Type</p>
-                                    <div class="popup_type_images_container">
-                                        ${typeIconsHTML}
-                                    </div>
-                                </div>
-                                <div class="popup_type_container">
-                                    <p>Weaknessess</p>
-                                    <div class="popup_type_images_container">
-                                        <img class="popup_type_image" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
-                                        <img class="popup_type_image" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
-                                        <img class="popup_type_image" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
-                                    </div>
-                                </div>
-                            </div>                            
-                        </div>
-                        <div class="popup_type_progress_divider"></div>
                         <div class="popup_progress_wrapper">
                             <div class="popup_progress_text_container">
                                 <p>HP</p>
@@ -113,7 +113,23 @@ function getPopUpCardTemplate(pokemon) {
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
+                </div>
     `;
 }
+
+
+
+//   <div class="popup_type_progress_wrapper">
+//                             <div class="popup_type_wrapper">
+                               
+//                                 <div class="popup_type_container">
+//                                     <p>Weaknessess</p>
+//                                     <div class="popup_type_images_container">
+//                                         <img class="popup_type_image" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
+//                                         <img class="popup_type_image" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
+//                                         <img class="popup_type_image" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
+//                                     </div>
+//                                 </div>
+//                             </div>                            
+//                         </div>

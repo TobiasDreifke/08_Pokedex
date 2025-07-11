@@ -8,6 +8,7 @@ async function init() {
 }
 
 
+
 // -----------------GLOBALS----------------
 
 
@@ -82,11 +83,29 @@ function renderPopUpCard(pokemon) {
 
 
 function togglePopUpOverlay(index) {
+
+
     const pokemon = allPokemonDetails[index];
     renderPopUpCard(pokemon);
+
+    setTimeout(() => {
+        const imageWrapper = document.querySelector('.popup_image_wrapper');
+        if (imageWrapper) {
+            imageWrapper.classList.add('open');
+        }
+    }, 0); 
+
+    setTimeout(() => {
+        const imageBgSpin = document.querySelector('.pokemon_popup_card_bg_image');
+        if (imageBgSpin) {
+            imageBgSpin.classList.add('open');
+        }
+    }, 0);
 }
 
 function closePopUpOverlay() {
+    document.querySelector('.popup_image_wrapper').classList.remove('open');
+
     let contentRef = document.getElementById("popup-content");
     contentRef.classList.add("d_none");
     contentRef.innerHTML = "";
@@ -107,16 +126,6 @@ function search() {
         filterPokemonForSearch(input, false);
     }
     else {
-        renderPokemonCard();
-    }
-}
-
-function reset() {
-    console.log("reset wird gestartet");
-    let inputRef = document.getElementById("input-search");
-    if (inputRef.value > 0) {
-        inputRef.value = ""
-        console.log("reset wird durchgeführt");
         renderPokemonCard();
     }
 }
@@ -144,9 +153,27 @@ async function filterPokemonForSearch(input, searchByNumber) {
         } else {
             let response = await fetch(pokemon.url);
             details = await response.json();
-            allPokemonDetails.push(details);
+            const alreadyExists = allPokemonDetails.some(p => p.id === details.id);
+            if (!alreadyExists) {
+                allPokemonDetails.push(details);
+                
+            }
+            contentRef.innerHTML += getMainPokedexTemplate(details, i);
         }
-        contentRef.innerHTML += getMainPokedexTemplate(details, i);
+    }
+}
+
+
+// -----------------RESET----------------
+
+
+function reset() {
+    console.log("reset wird gestartet");
+    let inputRef = document.getElementById("input-search");
+    if (inputRef.value.length > 0) {
+        inputRef.value = ""
+        console.log("reset wird durchgeführt");
+        renderPokemonCard();
     }
 }
 
@@ -175,7 +202,10 @@ async function next() {
     const fetchedDetails = await Promise.all(pokemonData);
     const sortedDetails = fetchedDetails.sort((a, b) => a.id - b.id);
 
-    allPokemonDetails.push(...sortedDetails);
+    allPokemonGenerations[currentGenNumber] = sortedDetails;
+allPokemonDetails = sortedDetails;
+
+    allPokemonDetails.push(...sortedDetails); //  Spread-Operator - takes every item and gives every item solo 
 
     const htmlSnippets = sortedDetails.map((details, index) =>
         getMainPokedexTemplate(details, index)
@@ -220,7 +250,6 @@ async function previous() {
 // -----------------NEXT & PREVIOUS TOGGLE BUTTONS----------------
 
 
-
 function toggleNextButton() {
     const nextButtonRef = document.getElementById("next-generation-button");
     const prevButtonRef = document.getElementById("previous-generation-button");
@@ -230,21 +259,6 @@ function toggleNextButton() {
 
     prevButtonRef.classList.toggle("d_none", currentGenNumber <= 1);
     prevButtonRef.classList.toggle("filterButton", currentGenNumber > 1);
-    //   if (currentGenNumber === maxGeneration) {
-//         nextButtonRef.classList.add("d_none");
-//         nextButtonRef.classList.remove("filterButton");
-//     } else {
-//         nextButtonRef.classList.remove("d_none");
-//         nextButtonRef.classList.add("filterButton");
-//     }
-
-//     if (currentGenNumber > 1) {
-//         prevButtonRef.classList.remove("d_none");
-//         prevButtonRef.classList.add("filterButton");
-//     } else {
-//         prevButtonRef.classList.add("d_none");
-//         prevButtonRef.classList.remove("filterButton");
-//     }
 }
 
 function togglePreviousButton() {
@@ -256,21 +270,6 @@ function togglePreviousButton() {
 
     prevButtonRef.classList.toggle("d_none", currentGenNumber <= 1);
     prevButtonRef.classList.toggle("filterButton", currentGenNumber > 1);
-    // if (currentGenNumber < maxGeneration) {
-    //     nextButtonRef.classList.remove("d_none");
-    //     nextButtonRef.classList.add("filterButton");
-    // } else {
-    //     nextButtonRef.classList.add("d_none");
-    //     nextButtonRef.classList.remove("filterButton");
-    // }
-
-    // if (currentGenNumber > 1) {
-    //     prevButtonRef.classList.remove("d_none");
-    //     prevButtonRef.classList.add("filterButton");
-    // } else {
-    //     prevButtonRef.classList.add("d_none");
-    //     prevButtonRef.classList.remove("filterButton");
-    // }
 }
 
 
