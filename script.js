@@ -1,11 +1,12 @@
 async function init() {
     await fetchDataJson();
+    visiblePokemonDetails = [...allPokemonDetails];
     await renderPokemonCard();
-    // await fetchSpeciesForLoadedPokemon();
     await fetchPokemonNamesForSearch();
     await fetchGenerationForFilter();
     await fetchSpeciesForFilter();
 }
+
 
 
 
@@ -16,6 +17,8 @@ let allPokemonDetails = [];
 let allPokemonSpecies = [];
 let allPokemonNames = [];
 let allPokemonGenerations = [];
+let visiblePokemonDetails = [];
+
 
 let currentGenNumber = 1;
 let maxGeneration = 0;
@@ -51,10 +54,51 @@ async function fetchGenerationForFilter() {
 }
 
 async function fetchSpeciesForFilter() {
-    let response = await fetch(`https://pokeapi.co/api/v2/generation/${currentGenNumber}`);
-    let data = await response.json();
+    const response = await fetch(`https://pokeapi.co/api/v2/generation/${currentGenNumber}`);
+    const data = await response.json();
     allPokemonSpecies = data.pokemon_species;
+
+    await fetchFluffForPopUp(allPokemonSpecies);
 }
+
+async function fetchFluffForPopUp(speciesList) {
+    const pokemonData = await Promise.all(
+        speciesList.map(async (species) => {
+            const speciesRes = await fetch(species.url);
+            const speciesData = await speciesRes.json();
+
+            const englishEntry = speciesData.flavor_text_entries.find(
+                entry => entry.language.name === "en"
+            );
+
+            const fluff = englishEntry
+                ? englishEntry.flavor_text.replace(/\f|\n/g, ' ')
+                : "No description available.";
+
+            const id = species.url.split("/").filter(Boolean).pop();
+
+            const pokemonRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+            const pokemonDetails = await pokemonRes.json();
+
+            pokemonDetails.fluff = fluff;
+
+            return pokemonDetails;
+        })
+    );
+
+    visiblePokemonDetails = pokemonData.sort((a, b) => a.id - b.id);
+}
+
+async function fetchFluffForSinglePokemon(pokemon) {
+    const speciesRes = await fetch(pokemon.species.url);
+    const speciesData = await speciesRes.json();
+
+    const englishEntry = speciesData.flavor_text_entries.find(entry => entry.language.name === "en");
+    const fluff = englishEntry ? englishEntry.flavor_text.replace(/\f|\n/g, ' ') : "No description available.";
+
+    pokemon.fluff = fluff;
+}
+
 
 
 // -----------------RENDER----------------
@@ -64,8 +108,8 @@ async function renderPokemonCard() {
     const contentRef = document.getElementById("content");
     let html = "";
 
-    for (let i = 0; i < allPokemonDetails.length; i++) {
-        const pokemon = allPokemonDetails[i];
+    for (let i = 0; i < visiblePokemonDetails.length; i++) {
+        const pokemon = visiblePokemonDetails[i];
         html += getMainPokedexTemplate(pokemon, i);
     }
 
@@ -76,24 +120,19 @@ function renderPopUpCard(pokemon) {
     const popupRef = document.getElementById("popup-content");
     popupRef.classList.remove("d_none");
     popupRef.innerHTML = getPopUpCardTemplate(pokemon);
+    setPokemonStatsBars(pokemon);
 }
 
 
 // -----------------OVERLAY----------------
 
 
+
 function togglePopUpOverlay(index) {
-
-
-    const pokemon = allPokemonDetails[index];
+    const pokemon = visiblePokemonDetails[index];
     renderPopUpCard(pokemon);
-
-    setTimeout(() => {
-        const imageWrapper = document.querySelector('.popup_image_wrapper');
-        if (imageWrapper) {
-            imageWrapper.classList.add('open');
-        }
-    }, 0); 
+    let bodyRef = document.getElementById("body")
+    bodyRef.classList.add("noscroll")
 
     setTimeout(() => {
         const imageBgSpin = document.querySelector('.pokemon_popup_card_bg_image');
@@ -103,10 +142,13 @@ function togglePopUpOverlay(index) {
     }, 0);
 }
 
+
 function closePopUpOverlay() {
     document.querySelector('.popup_image_wrapper').classList.remove('open');
 
     let contentRef = document.getElementById("popup-content");
+    let bodyRef = document.getElementById("body")
+    bodyRef.classList.remove("noscroll")
     contentRef.classList.add("d_none");
     contentRef.innerHTML = "";
 }
@@ -115,67 +157,79 @@ function closePopUpOverlay() {
 // -----------------SEARCH----------------
 
 
-function search() {
+async function search() {
     let inputRef = document.getElementById("input-search");
-    let input = inputRef.value.toLowerCase();
-    if (!isNaN(input) && input.length > 0) {
+    let input = inputRef.value.toLowerCase().trim();
+    if (input.length === 0) {
+        visiblePokemonDetails = [...allPokemonDetails];
+        renderPokemonCard();
+        return;
+    }
+
+    if (!isNaN(input)) {
         console.log("searching for number");
-        filterPokemonForSearch(input, true);
+        await filterPokemonForSearch(input, true);
     } else if (input.length >= 3) {
         console.log("searching for name");
-        filterPokemonForSearch(input, false);
+        await filterPokemonForSearch(input, false);
     }
-    else {
-        renderPokemonCard();
-    }
+
 }
+
 
 async function filterPokemonForSearch(input, searchByNumber) {
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
+    await fetchFluffForPopUp(allPokemonSpecies);
 
-    let filteredPokemonList = 0;
+    let filteredList = [];
 
     if (searchByNumber) {
-        filteredPokemonList = allPokemonDetails.filter(pokemon => pokemon.id.toString().includes(input));
+        filteredList = allPokemonDetails.filter(p =>
+            p.id.toString().includes(input)
+        );
     } else {
-        filteredPokemonList = allPokemonNames.filter(p => p.name.toLowerCase().includes(input.toLowerCase()));
+        const matches = allPokemonNames.filter(p =>
+            p.name.toLowerCase().includes(input.toLowerCase())
+        );
+
+        const promises = matches.map(async (p) => {
+            const existing = allPokemonDetails.find(d => d.name === p.name);
+            if (existing) return existing;
+
+            const res = await fetch(p.url);
+            const json = await res.json();
+            allPokemonDetails.push(json);
+            return json;
+        });
+
+        filteredList = await Promise.all(promises);
+        await Promise.all(filteredList.map(pokemon => fetchFluffForSinglePokemon(pokemon)));
+
     }
 
-    console.log(filteredPokemonList.length);
+    filteredList.sort((a, b) => a.id - b.id);
+    visiblePokemonDetails = filteredList;
 
-    for (let i = 0; i < filteredPokemonList.length; i++) {
-        let pokemon = filteredPokemonList[i];
-
-        let details;
-        if (pokemon.sprites) {
-            details = pokemon;
-        } else {
-            let response = await fetch(pokemon.url);
-            details = await response.json();
-            const alreadyExists = allPokemonDetails.some(p => p.id === details.id);
-            if (!alreadyExists) {
-                allPokemonDetails.push(details);
-                
-            }
-            contentRef.innerHTML += getMainPokedexTemplate(details, i);
-        }
-    }
+    renderPokemonCard();
 }
+
+
+
 
 
 // -----------------RESET----------------
 
 
 function reset() {
-    console.log("reset wird gestartet");
+    console.log("Reset wird durchgeführt");
     let inputRef = document.getElementById("input-search");
-    if (inputRef.value.length > 0) {
-        inputRef.value = ""
-        console.log("reset wird durchgeführt");
-        renderPokemonCard();
-    }
+    inputRef.value = "";
+
+    visiblePokemonDetails = [...allPokemonDetails];
+    renderPokemonCard();
 }
+
 
 
 // -----------------NEXT & PREVIOUS----------------
@@ -186,26 +240,19 @@ async function next() {
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
 
-    toggleNextButton()
+    toggleNextButton();
     await fetchSpeciesForFilter();
 
     const pokemonData = allPokemonSpecies.map(async (pokemonSpecies) => {
-        const speciesUrl = pokemonSpecies.url;
-
-        const id = speciesUrl.split('/').filter(Boolean).pop();
-
+        const id = pokemonSpecies.url.split('/').filter(Boolean).pop();
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        const details = await response.json();
-        return details;
+        return await response.json();
     });
 
     const fetchedDetails = await Promise.all(pokemonData);
     const sortedDetails = fetchedDetails.sort((a, b) => a.id - b.id);
 
-    allPokemonGenerations[currentGenNumber] = sortedDetails;
-allPokemonDetails = sortedDetails;
-
-    allPokemonDetails.push(...sortedDetails); //  Spread-Operator - takes every item and gives every item solo 
+    visiblePokemonDetails = [...sortedDetails];
 
     const htmlSnippets = sortedDetails.map((details, index) =>
         getMainPokedexTemplate(details, index)
@@ -213,31 +260,26 @@ allPokemonDetails = sortedDetails;
 
     contentRef.innerHTML = htmlSnippets.join('');
 }
+
 
 async function previous() {
     currentGenNumber--;
-
-
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
 
-
-    togglePreviousButton()
+    togglePreviousButton();
     await fetchSpeciesForFilter();
 
     const pokemonData = allPokemonSpecies.map(async (pokemonSpecies) => {
-        const speciesUrl = pokemonSpecies.url;
-        const id = speciesUrl.split('/').filter(Boolean).pop();
-
+        const id = pokemonSpecies.url.split('/').filter(Boolean).pop();
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        const details = await response.json();
-        return details;
+        return await response.json();
     });
 
     const fetchedDetails = await Promise.all(pokemonData);
     const sortedDetails = fetchedDetails.sort((a, b) => a.id - b.id);
 
-    allPokemonDetails = [...sortedDetails];
+    visiblePokemonDetails = [...sortedDetails];
 
     const htmlSnippets = sortedDetails.map((details, index) =>
         getMainPokedexTemplate(details, index)
@@ -245,6 +287,7 @@ async function previous() {
 
     contentRef.innerHTML = htmlSnippets.join('');
 }
+
 
 
 // -----------------NEXT & PREVIOUS TOGGLE BUTTONS----------------
@@ -271,6 +314,33 @@ function togglePreviousButton() {
     prevButtonRef.classList.toggle("d_none", currentGenNumber <= 1);
     prevButtonRef.classList.toggle("filterButton", currentGenNumber > 1);
 }
+
+// -------------------PROGRESS BAR--------------------------
+
+function setPokemonStatsBars(pokemon) {
+    const MAX_STAT_VALUE = 255;
+    const statIndices = [0, 1, 2, 5]; // HP, Attack, Defense, Speed
+    const statBars = document.querySelectorAll('.popup_progress_bar');
+
+    statBars.forEach(bar => {
+        bar.style.width = '0%';
+        bar.innerText = '';
+    });
+
+    setTimeout(() => {
+        statIndices.forEach((index, i) => {
+            const stat = pokemon.stats[index].base_stat;
+            const percentage = Math.min(100, (stat / MAX_STAT_VALUE) * 100);
+            const bar = statBars[i];
+
+            if (bar) {
+                bar.style.width = `${percentage}%`;
+                bar.innerText = `${stat}`;
+            }
+        });
+    }, 100); 
+}
+
 
 
 init();
