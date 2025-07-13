@@ -233,7 +233,7 @@ async function filterPokemonForSearch(input, searchByNumber) {
 
     filteredList.sort((a, b) => a.id - b.id);
     visiblePokemonDetails = filteredList;
-    hideLoadingSpinner()
+    hideLoadingSpinner();
     renderPokemonCard();
 }
 
@@ -259,7 +259,7 @@ function reset() {
 
 
 async function next() {
-
+    showLoadingSpinner();
     currentGenNumber++;
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
@@ -281,12 +281,13 @@ async function next() {
     const htmlSnippets = sortedDetails.map((details, index) =>
         getMainPokedexTemplate(details, index)
     );
-
+    hideLoadingSpinner()
     contentRef.innerHTML = htmlSnippets.join('');
 }
 
 
 async function previous() {
+    showLoadingSpinner();
     currentGenNumber--;
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
@@ -308,7 +309,7 @@ async function previous() {
     const htmlSnippets = sortedDetails.map((details, index) =>
         getMainPokedexTemplate(details, index)
     );
-
+    hideLoadingSpinner();
     contentRef.innerHTML = htmlSnippets.join('');
 }
 
