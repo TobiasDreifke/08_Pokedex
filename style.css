@@ -2,6 +2,22 @@
 /* -----------------GLOBAL--------------- */
 /* --------------------------------- */
 
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f14d;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e2e2e2;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 html,
 body {
     height: 100%;
@@ -176,7 +192,7 @@ main {
     background: lightgray;
     border-radius: 4px;
     cursor: pointer;
-    
+
     width: fit-content;
     /* margin: 0.1rem; */
 }

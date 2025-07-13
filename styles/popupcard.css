@@ -282,6 +282,10 @@
     position: relative;
     z-index: 2;
     width: 85%;
+    height: 4.2rem;
+    overflow: auto;
+    /* background-color: #0000004e; */
+    
 }
 
 .popup_lower_text p {

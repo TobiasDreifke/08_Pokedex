@@ -148,11 +148,18 @@ function renderPopUpCard(pokemon) {
 
 function togglePopUpOverlay(index) {
     currentPopupIndex = index;
-
     const pokemon = visiblePokemonDetails[index];
-    renderPopUpCard(pokemon);
-    let bodyRef = document.getElementById("body")
-    bodyRef.classList.add("noscroll")
+
+    if (!pokemon.fluff) {
+        fetchFluffForSinglePokemon(pokemon).then(() => {
+            renderPopUpCard(pokemon);
+        });
+    } else {
+        renderPopUpCard(pokemon);
+    }
+
+    let bodyRef = document.getElementById("body");
+    bodyRef.classList.add("noscroll");
 
     setTimeout(() => {
         const imageBgSpin = document.querySelector('.pokemon_popup_card_bg_image');
@@ -250,6 +257,7 @@ function reset() {
     inputRef.value = "";
 
     visiblePokemonDetails = [...allPokemonDetails];
+    fetchFluffForPopUp(allPokemonSpecies);
     renderPokemonCard();
 }
 
@@ -259,6 +267,8 @@ function reset() {
 
 
 async function next() {
+
+
     showLoadingSpinner();
     currentGenNumber++;
     const contentRef = document.getElementById("content");
@@ -287,6 +297,7 @@ async function next() {
 
 
 async function previous() {
+
     showLoadingSpinner();
     currentGenNumber--;
     const contentRef = document.getElementById("content");
