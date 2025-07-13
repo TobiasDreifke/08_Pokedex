@@ -153,20 +153,26 @@ function togglePopUpOverlay(index) {
     if (!pokemon.fluff) {
         fetchFluffForSinglePokemon(pokemon).then(() => {
             renderPopUpCard(pokemon);
+            triggerBGspin(); 
         });
     } else {
         renderPopUpCard(pokemon);
+        triggerBGspin(); 
     }
 
     let bodyRef = document.getElementById("body");
     bodyRef.classList.add("noscroll");
+}
 
-    setTimeout(() => {
+function triggerBGspin() {
+    requestAnimationFrame(() => {
         const imageBgSpin = document.querySelector('.pokemon_popup_card_bg_image');
         if (imageBgSpin) {
+            imageBgSpin.classList.remove('open'); // RESET THE ANIMATION
+            void imageBgSpin.offsetWidth; // FORCE DOM TO RELOAD OBJECT
             imageBgSpin.classList.add('open');
         }
-    }, 0);
+    });
 }
 
 
@@ -255,10 +261,13 @@ function reset() {
     console.log("Reset wird durchgeführt");
     let inputRef = document.getElementById("input-search");
     inputRef.value = "";
+    currentGenNumber = 1;
+    currentPopupIndex = 0;
 
     visiblePokemonDetails = [...allPokemonDetails];
     fetchFluffForPopUp(allPokemonSpecies);
     renderPokemonCard();
+    toggleNextButton();
 }
 
 
@@ -267,8 +276,6 @@ function reset() {
 
 
 async function next() {
-
-
     showLoadingSpinner();
     currentGenNumber++;
     const contentRef = document.getElementById("content");
