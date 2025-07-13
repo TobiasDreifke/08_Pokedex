@@ -57,8 +57,8 @@ h3 {
     display: none;
 }
 
-.noscroll { 
-  overflow: hidden;
+.noscroll {
+    overflow: hidden;
 }
 
 /* --------------------------------- */
@@ -111,12 +111,13 @@ header {
 
 main {
     width: 100%;
+   
     display: flex;
     flex-direction: column;
     align-items: center;
     /* justify-content: center; */
     flex: 1;
-    /* min-height: 0; */
+    min-height: 100dvh;
 }
 
 /* -----------------FILTER--------------- */
@@ -294,7 +295,26 @@ main {
     z-index: 99;
     transition: transform 0.5s ease;
     transform-origin: center center;
+    animation: floatUpDown2 2s ease-in-out infinite;
+    animation-delay: 0s;
+
+
 }
+
+@keyframes floatUpDown2 {
+    0% {
+        transform: translate(-50%, -76%);
+    }
+
+    50% {
+        transform: translate(-50%, -75%);
+    }
+
+    100% {
+        transform: translate(-50%, -76%);
+    }
+}
+
 
 .pokemon_card_image:hover {
     transform: translate(-50%, -75%) scale(1.2);
@@ -314,10 +334,16 @@ main {
     /* filter: invert(1); */
     opacity: 0.07;
     pointer-events: none;
+
+
+    /* transition: transform 0.5s ease-out; */
 }
 
-/* .pokemon_card_bg_image:hover {
-    transform: translate(-50%, -75%) scale(1.2);
+/* 
+.pokemon_card_bg_image.open {
+
+    transform: translate(-50%, -50%) rotate(720deg);
+
 } */
 
 .pokemon_id_mask {
@@ -409,6 +435,7 @@ footer {
     padding: 1rem 0;
     text-align: center;
     font-size: 0.9rem;
+    height: 5rem;
 }
 
 footer a {
@@ -424,9 +451,45 @@ footer a:focus {
 }
 
 /* --------------------------------- */
-/* -----------------FADEINADNIMATION--------------- */
+/* -----------------LOADING SPINNER--------------- */
 /* --------------------------------- */
-/* 
+
+.loading_spinner {
+    background-color: rgba(255, 255, 255, 0.432);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+    /* backdrop-filter: blur(10px); */
+}
+
+.loading_spinner img {
+    width: 64px;
+    height: 64px;
+    animation: spin 0.25s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.d_none {
+    display: none !important;
+}
+
+
 
 
 /* --------------------------------- */
@@ -446,4 +509,3 @@ footer a:focus {
         gap: 1rem;
     }
 }
-

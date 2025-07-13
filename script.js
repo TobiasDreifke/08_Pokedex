@@ -7,8 +7,18 @@ async function init() {
     await fetchSpeciesForFilter();
 }
 
+// -----------------NEXT AND PREVIOUS POPUPCARD----------------
 
+function next_popup() {
+    currentPopupIndex = (currentPopupIndex + 1) % visiblePokemonDetails.length;
+    togglePopUpOverlay(currentPopupIndex);
+}
 
+function previous_popup() {
+    currentPopupIndex =
+        (currentPopupIndex - 1 + visiblePokemonDetails.length) % visiblePokemonDetails.length;
+    togglePopUpOverlay(currentPopupIndex);
+}
 
 // -----------------GLOBALS----------------
 
@@ -22,19 +32,28 @@ let visiblePokemonDetails = [];
 
 let currentGenNumber = 1;
 let maxGeneration = 0;
+let currentPopupIndex = 0;
 
 
 // -----------------FETCH----------------
 
 
 async function fetchDataJson() {
-    let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=151");
-    let data = await response.json();
-    let pokemonList = data.results.map(async data => {
-        let response = await fetch(data.url);
-        return await response.json();
-    })
-    allPokemonDetails = await Promise.all(pokemonList);
+    showLoadingSpinner();
+    try {
+        let response = await fetch("https://pokeapi.co/api/v2/pokemon?offset=0&limit=151");
+        let data = await response.json();
+        let pokemonList = data.results.map(async data => {
+            let response = await fetch(data.url);
+            return await response.json();
+        })
+        allPokemonDetails = await Promise.all(pokemonList);
+    } catch (error) {
+        console.error("Fetch failed", error);
+    } finally {
+        hideLoadingSpinner();
+    }
+
 }
 
 async function fetchPokemonNamesForSearch() {
@@ -127,8 +146,9 @@ function renderPopUpCard(pokemon) {
 // -----------------OVERLAY----------------
 
 
-
 function togglePopUpOverlay(index) {
+    currentPopupIndex = index;
+
     const pokemon = visiblePokemonDetails[index];
     renderPopUpCard(pokemon);
     let bodyRef = document.getElementById("body")
@@ -169,6 +189,7 @@ async function search() {
     if (!isNaN(input)) {
         console.log("searching for number");
         await filterPokemonForSearch(input, true);
+
     } else if (input.length >= 3) {
         console.log("searching for name");
         await filterPokemonForSearch(input, false);
@@ -178,6 +199,8 @@ async function search() {
 
 
 async function filterPokemonForSearch(input, searchByNumber) {
+    showLoadingSpinner();
+
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
     await fetchFluffForPopUp(allPokemonSpecies);
@@ -210,7 +233,7 @@ async function filterPokemonForSearch(input, searchByNumber) {
 
     filteredList.sort((a, b) => a.id - b.id);
     visiblePokemonDetails = filteredList;
-
+    hideLoadingSpinner()
     renderPokemonCard();
 }
 
@@ -236,6 +259,7 @@ function reset() {
 
 
 async function next() {
+
     currentGenNumber++;
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = "";
@@ -338,7 +362,18 @@ function setPokemonStatsBars(pokemon) {
                 bar.innerText = `${stat}`;
             }
         });
-    }, 100); 
+    }, 100);
+}
+
+// -------------------LOADING SPINNER--------------------------
+
+
+function showLoadingSpinner() {
+    document.getElementById('loading-spinner').classList.remove('d_none');
+}
+
+function hideLoadingSpinner() {
+    document.getElementById('loading-spinner').classList.add('d_none');
 }
 
 

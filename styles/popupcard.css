@@ -97,8 +97,43 @@
 
 /* === PROGRESS DIVIDER === */
 .popup_type_progress_divider {
-    width: 100%;
+    width: 85%;
     height: 170px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+/* ---------------------BUTTONS-------------------------- */
+
+.popup_button_wrapper {
+    position: absolute;
+    width: 250px;
+    /* height: 170px; */
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    z-index: 999999;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popup_button {
+    /* background-color: aqua; */
+    padding: 0;
+    margin: 0.2;
+    font-size: 2rem;
+    color: rgba(223, 223, 223, 0.725);
+    font-weight: 100;
+    line-height: 1;
+    /* margin-bottom: 1rem; */
+}
+
+.popup_button:hover {
+    cursor: pointer;
+    color: white;
 }
 
 

@@ -46,7 +46,11 @@ function getPopUpCardTemplate(pokemon) {
     let backgroundStyleGlow = type2  ? `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"` : `style="background: var(--${type1})"`;
     let typeIconsHTML = getTypeIconsRef(types);
 
-    return `        <div class="pop_up_card_container">
+    return `        <div class="pop_up_card_container" onclick="event.stopPropagation()">
+                        <div class="popup_button_wrapper">
+                            <div id="previous-popup" class="popup_button" onclick="previous_popup()"><</div>
+                            <div id="next-popup" class="popup_button" onclick="next_popup()">></div>
+                        </div>
                         <div class="pokemon_popup_card_bg_glow" ${backgroundStyleGlow}></div>
                         <div class="popup_card_upper" ${backgroundStyle}>
                             <img class="pokemon_popup_card_bg_image" src="./assets/icons/pokeball_straight.png"></img>
@@ -65,7 +69,8 @@ function getPopUpCardTemplate(pokemon) {
                             </div>
                         </div>
                         <div class="popup_card_lower">
-                            <div class="popup_type_progress_divider"></div>
+                            <div class="popup_type_progress_divider">        
+                            </div>
                             <div class="popup_lower_text">
                                 <p>${pokemon.fluff}</p>
                             </div>
