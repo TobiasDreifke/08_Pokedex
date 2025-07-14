@@ -69,6 +69,9 @@ function getPopUpCardTemplate(pokemon) {
                             </div>
                         </div>
                         <div class="popup_card_lower">
+                            <div class="popup_upper_text_02">
+                                <h2 class="popup_upper_text_02_h2">#${pokemon.id}</h2>                    
+                            </div>
                             <div class="popup_type_progress_divider">        
                             </div>
                             <div class="popup_lower_text">
@@ -89,48 +92,30 @@ function getPopUpCardTemplate(pokemon) {
                             <div class="popup_progress_bar_wrapper">
                                 <div class="popup_progress_bar_container">
                                     <div class="popup_progress_bar" style="width: ${pokemon.stats[0].base_stat}%;">
-                                        <span class="stat-value">${pokemon.stats[0].base_stat}</span>
+                                        <span class="stat_value">${pokemon.stats[0].base_stat}</span>
                                     </div>
-                                    <span class="stat-max">255</span>
+                                    <span class="stat_max">255</span>
                                 </div>
                                 <div class="popup_progress_bar_container">
                                     <div class="popup_progress_bar" style="width: ${pokemon.stats[1].base_stat}%;">
-                                        <span class="stat-value">${pokemon.stats[1].base_stat}</span>
+                                        <span class="stat_value">${pokemon.stats[1].base_stat}</span>
                                     </div>
-                                    <span class="stat-max">255</span>
+                                    <span class="stat_max">255</span>
                                 </div>
                                 <div class="popup_progress_bar_container">
                                     <div class="popup_progress_bar" style="width: ${pokemon.stats[2].base_stat}%;">
-                                        <span class="stat-value">${pokemon.stats[2].base_stat}</span>                                       
+                                        <span class="stat_value">${pokemon.stats[2].base_stat}</span>                                       
                                     </div>
-                                     <span class="stat-max">255</span>
+                                     <span class="stat_max">255</span>
                                 </div>
                                 <div class="popup_progress_bar_container">
                                     <div class="popup_progress_bar" style="width: ${pokemon.stats[5].base_stat}%;">
-                                        <span class="stat-value">${pokemon.stats[5].base_stat}</span>                                        
+                                        <span class="stat_value">${pokemon.stats[5].base_stat}</span>                                        
                                     </div>
-                                    <span class="stat-max">255</span>
+                                    <span class="stat_max">255</span>
                                 </div>
-                            </div>
-
-                            </div>
+                            </div>                    
                         </div>
                     </div>
     `;
 }
-
-
-
-//   <div class="popup_type_progress_wrapper">
-//                             <div class="popup_type_wrapper">
-                               
-//                                 <div class="popup_type_container">
-//                                     <p>Weaknessess</p>
-//                                     <div class="popup_type_images_container">
-//                                         <img class="popup_type_image" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
-//                                         <img class="popup_type_image" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
-//                                         <img class="popup_type_image" src="${pokemon.sprites.other["official-artwork"].front_default}" alt="">
-//                                     </div>
-//                                 </div>
-//                             </div>                            
-//                         </div>
