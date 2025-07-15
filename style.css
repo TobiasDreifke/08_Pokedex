@@ -7,7 +7,7 @@ html,
 body {
     padding: 0;
     scroll-behavior: smooth;
-   height: 100dvh;
+    height: 100dvh;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -18,6 +18,17 @@ body {
     line-height: 1.5;
     background-color: #ffffff;
     color: #000;
+    background:
+        radial-gradient(circle at 20% 30%, var(--b-fairy) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, var(--b-water) 0%, transparent 60%),
+        radial-gradient(circle at 50% 70%, var(--b-fire) 0%, transparent 55%),
+        radial-gradient(circle at 30% 80%, var(--b-psychic) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, var(--b-grass) 0%, transparent 65%),
+        radial-gradient(circle at 60% 40%, var(--b-ice) 0%, transparent 50%);
+    background-color: #fff;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 * {
@@ -148,7 +159,8 @@ nav {
 }
 
 .headline_wrapper h1 {
-    width: 110px;
+    color: rgb(255, 255, 255);
+    width: 90px;
     transform: translate(0%, -0%);
     transition: all 600ms ease;
 }
@@ -179,9 +191,9 @@ nav {
 
 .input_field {
     height: 1.2rem;
-    width: 110px;
+    width: 120px;
     background-color: rgb(255, 255, 255);
-    background-image: url('../assets/icons/search-interface-symbol.png');
+    background-image: url('./assets/icons/search-interface-symbol.png');
     background-repeat: no-repeat;
     background-position: right center;
     background-size: 15px 15px;
@@ -192,15 +204,20 @@ nav {
 }
 
 .filterButton {
-    width: 8rem;
-    height: 32px;
+    width: 90px;
+    height: 1.5rem;
     display: flex;
     align-items: center;
     padding: 6px 12px;
-    background: lightgray;
+    background: rgb(255, 255, 255);
     border-radius: 4px;
     cursor: pointer;
     width: fit-content;
+    transition: all 600ms ease;
+}
+
+.filterButton:hover {
+    background: rgba(255, 255, 255, 0.67);
 }
 
 .filterButton.selected {
@@ -231,7 +248,7 @@ main {
 .filter_wrapper {
     margin-top: 1rem;
     max-width: 1440px;
-    width: 85%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -249,13 +266,16 @@ main {
 
 
 .current_gen_wrapper {
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
     display: flex;
     justify-content: center;
     width: 85%;
+    font-size: 1.5rem;
     margin: 0.5rem;
     /* mrgin-top: -1.75rem; */
     pointer-events: none;
-    transform: translate(0%, -150%);
+    transform: translate(0%, -100%);
     transition: all 250ms ease;
 }
 
@@ -522,14 +542,14 @@ footer a:focus {
     position: fixed;
     bottom: 1%;
     right: 1%;
-    transform: translate(-0%, -0%);
+    transform: translate(-2%, -10%);
     z-index: 1000;
 }
 
 .back_to_top_image {
     width: 3rem;
     height: auto;
-    filter: invert(0.7) opacity(0.5)
+    filter: opacity(0.5)
 }
 
 .back_to_top_image:hover {
@@ -547,9 +567,9 @@ footer a:focus {
 }
 
 @media (max-width: 480px) {
-   .headline_wrapper h1 {
-    transform: translate(21%, -0%);
-}
+    .input_field {
+        width: 90px;
+    }
 }
 
 

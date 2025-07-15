@@ -120,7 +120,7 @@ function getPokemonTypeData(pokemon) {
     const type1 = types[0];
     const type2 = types[1] || null;
 
-    const backgroundStyle = type2? `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"`: `style="background: var(--${type1})"`;
+    const backgroundStyle = type2 ? `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"` : `style="background: var(--${type1})"`;
 
     const backgroundStyleGlow = backgroundStyle;
     const typeIconsHTML = getTypeIconsRef(types);
@@ -211,6 +211,15 @@ async function filterPokemonForSearch(input, searchByNumber) {
     document.getElementById("content").innerHTML = "";
     await fetchFluffForPopUp(allPokemonSpecies);
 
+    let filteredList = await getFilterList(input, searchByNumber);
+
+    visiblePokemonDetails = filteredList.sort((a, b) => a.id - b.id);
+    hideLoadingSpinner();
+    renderPokemonCard();
+}
+
+async function getFilterList(input, searchByNumber) {
+
     let filteredList = [];
 
     if (searchByNumber) {
@@ -228,10 +237,7 @@ async function filterPokemonForSearch(input, searchByNumber) {
         filteredList = await Promise.all(promises);
         await Promise.all(filteredList.map(fetchFluffForSinglePokemon));
     }
-
-    visiblePokemonDetails = filteredList.sort((a, b) => a.id - b.id);
-    hideLoadingSpinner();
-    renderPokemonCard();
+    return filteredList;
 }
 
 async function reset() {
@@ -287,7 +293,7 @@ function updateGenNavButtons() {
 
 
 function setPokemonStatsBars(pokemon) {
-    const MAX = 255;
+    const max = 255;
     const abilityIndex = [0, 1, 2, 5];
     const statBars = document.querySelectorAll('.popup_progress_bar');
 
@@ -299,7 +305,7 @@ function setPokemonStatsBars(pokemon) {
     setTimeout(() => {
         abilityIndex.forEach((idx, i) => {
             const stat = pokemon.stats[idx].base_stat;
-            const percent = Math.min(100, (stat / MAX) * 100);
+            const percent = Math.min(100, (stat / max) * 100);
             const bar = statBars[i];
             if (bar) {
                 bar.style.width = `${percent}%`;
@@ -320,7 +326,6 @@ function showLoadingSpinner() {
 function hideLoadingSpinner() {
     document.getElementById('loading-spinner').classList.add('d_none');
 }
-
 
 // ---------------------------- START ----------------------------
 
