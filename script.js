@@ -22,6 +22,7 @@ async function init() {
     await fetchPokemonNamesForSearch();
     await fetchGenerationForFilter();
     await fetchSpeciesForFilter();
+    currentGenIndicator();
 }
 
 
@@ -95,7 +96,7 @@ async function fetchFluffForSinglePokemon(pokemon) {
 // ---------------------------- RENDER ----------------------------
 
 
-async function renderPokemonCard() {
+async function renderPokemonCard(pokemon) {
     const contentRef = document.getElementById("content");
     contentRef.innerHTML = visiblePokemonDetails.map(getMainPokedexTemplate).join('');
 }
@@ -107,6 +108,31 @@ function renderPopUpCard(pokemon) {
     setPokemonStatsBars(pokemon);
 }
 
+function getTypeIconsRef(types) {
+    return types.map(type => {
+        const iconPath = pokemonTypeIcons[type];
+        return iconPath ? `<img class="type_icon bg_${type}" title="${type}" src="${iconPath}">` : "";
+    }).join("");
+}
+
+function getPokemonTypeData(pokemon) {
+    const types = pokemon.types.map(t => t.type.name);
+    const type1 = types[0];
+    const type2 = types[1] || null;
+
+    const backgroundStyle = type2? `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"`: `style="background: var(--${type1})"`;
+
+    const backgroundStyleGlow = backgroundStyle;
+    const typeIconsHTML = getTypeIconsRef(types);
+
+    return { backgroundStyle, backgroundStyleGlow, typeIconsHTML, types };
+}
+
+function currentGenIndicator() {
+    let content = document.getElementById("current-gen");
+    content.innerHTML = "";
+    content.innerHTML = `<p>&nbsp;${currentGenNumber}</p>`
+}
 
 // ---------------------------- POPUP ----------------------------
 
@@ -165,11 +191,11 @@ async function search() {
     const input = document.getElementById("input-search").value.toLowerCase().trim();
 
     if (!input) {
-        currentGenNumber = 1;
+        await fetchSpeciesForFilter();
         visiblePokemonDetails = [...allPokemonDetails];
         await fetchFluffForPopUp(allPokemonSpecies);
         renderPokemonCard();
-        toggleNextButton();
+        updateGenNavButtons();
         return;
     }
 
@@ -232,6 +258,7 @@ async function next() {
     await fetchSpeciesForFilter();
     renderPokemonCard();
     hideLoadingSpinner();
+    currentGenIndicator();
 }
 
 async function previous() {
@@ -241,6 +268,7 @@ async function previous() {
     await fetchSpeciesForFilter();
     renderPokemonCard();
     hideLoadingSpinner();
+    currentGenIndicator();
 }
 
 function updateGenNavButtons() {

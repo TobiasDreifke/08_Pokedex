@@ -1,12 +1,5 @@
-
 function getMainPokedexTemplate(pokemon, i) {
-
-    const types = pokemon.types.map(banana => banana.type.name);
-    const type1 = types[0];
-    const type2 = types[1] || null;
-
-    let backgroundStyle = type2 ? `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"` : `style="background: var(--${type1})"`;
-
+    const { backgroundStyle, backgroundStyleGlow, typeIconsHTML, types } = getPokemonTypeData(pokemon);
     let iconsRef = getTypeIconsRef(types);
 
     return `
@@ -30,22 +23,8 @@ function getMainPokedexTemplate(pokemon, i) {
     `;
 }
 
-function getTypeIconsRef(types) {
-    return types.map(type => {
-        const iconPath = pokemonTypeIcons[type];
-        return iconPath ? `<img class="type_icon bg_${type}" title="${type}" src="${iconPath}">` : "";
-    }).join("");
-}
-
 function getPopUpCardTemplate(pokemon) {
-    const types = pokemon.types.map(banana => banana.type.name);
-    const type1 = types[0];
-    const type2 = types[1] || null;
-
-    let backgroundStyle = type2 ? `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"` : `style="background: var(--${type1})"`;
-    let backgroundStyleGlow = type2  ? `style="background: linear-gradient(90deg, var(--${type1}) 50%, var(--${type2}) 50%)"` : `style="background: var(--${type1})"`;
-    let typeIconsHTML = getTypeIconsRef(types);
-
+    const { backgroundStyle, backgroundStyleGlow, typeIconsHTML } = getPokemonTypeData(pokemon);
     return `        <div class="pop_up_card_container" onclick="event.stopPropagation()">
                         <div class="popup_button_wrapper">
                             <div id="previous-popup" class="popup_button" onclick="previous_popup()"><</div>

@@ -5,11 +5,12 @@
 
 html,
 body {
-    height: 100%;
-    margin: 0;
     padding: 0;
     scroll-behavior: smooth;
-
+   height: 100dvh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 body {
@@ -17,8 +18,6 @@ body {
     line-height: 1.5;
     background-color: #ffffff;
     color: #000;
-    min-height: 100dvh;
-
 }
 
 * {
@@ -88,12 +87,30 @@ header {
     background-color: #222;
     padding: 1rem 0;
     color: white;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav {
+    max-width: 1440px;
+    width: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav_wrapper {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
 }
 
 .nav_wrapper img {
@@ -124,37 +141,24 @@ header {
     outline: none;
 }
 
-/* --------------------------------- */
-/* -----------------MAIN--------------- */
-/* --------------------------------- */
-
-main {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-    min-height: 100dvh;
-}
-
-/* -----------------FILTER--------------- */
-
-.filter_wrapper {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    max-width: 1440px;
-    width: 95%;
+.headline_wrapper {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    justify-content: start;
 }
 
-.filterButton_wrapper {
+.headline_wrapper h1 {
+    width: 110px;
+    transform: translate(0%, -0%);
+    transition: all 600ms ease;
+}
+
+.filterButton_container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
+
 }
 
 .filter_container {
@@ -169,6 +173,22 @@ main {
 .input_and_button {
     display: flex;
     gap: 0.2rem;
+
+
+}
+
+.input_field {
+    height: 1.2rem;
+    width: 110px;
+    background-color: rgb(255, 255, 255);
+    background-image: url('../assets/icons/search-interface-symbol.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 15px 15px;
+
+    padding-right: 24px;
+    padding-left: 8px;
+    border-width: 0px;
 }
 
 .filterButton {
@@ -194,6 +214,56 @@ main {
 
 }
 
+/* --------------------------------- */
+/* -----------------MAIN--------------- */
+/* --------------------------------- */
+
+main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+/* -----------------FILTER--------------- */
+
+.filter_wrapper {
+    margin-top: 1rem;
+    max-width: 1440px;
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.filterButton_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    justify-content: space-between;
+    width: 85%;
+}
+
+
+
+.current_gen_wrapper {
+    display: flex;
+    justify-content: center;
+    width: 85%;
+    margin: 0.5rem;
+    /* mrgin-top: -1.75rem; */
+    pointer-events: none;
+    transform: translate(0%, -150%);
+    transition: all 250ms ease;
+}
+
+.current_gen_container {
+    display: flex;
+    justify-content: center;
+}
+
 /* -----------------POKEMON CARDS--------------- */
 
 .main_wrapper {
@@ -206,6 +276,7 @@ main {
 .main_container {
     gap: 5rem;
     padding: 1rem;
+    padding-top: 0;
 }
 
 .content {
@@ -475,17 +546,30 @@ footer a:focus {
     }
 }
 
+@media (max-width: 480px) {
+   .headline_wrapper h1 {
+    transform: translate(21%, -0%);
+}
+}
+
+
+
+
 @media (max-width: 520px) {
+    .current_gen_wrapper {
+        transform: translate(0%, 0%);
+    }
+}
+
+@media (max-width: 605px) {
+    nav ul.nav_wrapper {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
     .filter_wrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
-    }
-}
-
-@media (max-width: 600px) {
-    nav ul.nav_wrapper {
-        flex-direction: column;
-        gap: 1rem;
     }
 }
